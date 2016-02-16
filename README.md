@@ -60,6 +60,6 @@ or email us at info@nimio.us if this package is out of date or contains bugs.
 
 ## References
 
-* [Khronos OpenGL ES Homepage](https://www.khronos.org/vulkan/)
+* [Khronos Vulkan Homepage](https://www.khronos.org/vulkan/)
 * [Khronos Vulkan Registry](https://www.khronos.org/registry/vulkan/)
 * [Nim Programming Language](http://nim-lang.org/)
