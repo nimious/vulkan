@@ -19,7 +19,7 @@ template vkMakeVersion*(major, minor, patch: expr): expr =
   ((major shl 22) or (minor shl 12) or patch)
 
 const
-  vkApiVersion* = vkMakeVersion(1, 0, 1)
+  vkApiVersion* = vkMakeVersion(1, 0, 3)
   vkNullHandle* = 0
 
 type
@@ -82,9 +82,9 @@ type
 
   VkResult* {.pure, size: sizeof(cint).} = enum
     errorValidationFailedExt = - 1000011001,
-    errorNativeWindowInUseKhr = - 1000008000,
     errorIncompatibleDisplayKhr = - 1000003001,
     errorOutOfDateKhr = - 1000001004,
+    errorNativeWindowInUseKhr = - 1000000001,
     errorSurfaceLostKhr = - 1000000000,
     errorFormatNotSupported = - 11,
     errorTooManyObjects = - 10,
@@ -598,7 +598,8 @@ type
     colorAttachmentBlendBit = 0x00000100,
     depthStencilAttachmentBit = 0x00000200,
     blitSrcBit = 0x00000400,
-    blitDstBit = 0x00000800
+    blitDstBit = 0x00000800,
+    sampledImageFilterLinear = 0x00001000
 
   VkFormatFeatureFlags* {.pure, size: sizeof(cint).} = VkFlags
 
@@ -3293,7 +3294,7 @@ type
   VkSurfaceKHR* = pointer
 
 const
-  VK_KHR_SURFACE_SPEC_VERSION* = 24
+  VK_KHR_SURFACE_SPEC_VERSION* = 25
   VK_KHR_SURFACE_EXTENSION_NAME* = "VK_KHR_surface"
 
 type
@@ -3882,7 +3883,7 @@ when defined(vkUsePlatformAndroidKhr):
     vkKhrAndroidSurface* = 1
 
   const
-    vkKhrAndroidSurfaceSpecVersion* = 5
+    vkKhrAndroidSurfaceSpecVersion* = 6
     vkKhrAndroidSurfaceExtensionName* = "VK_KHR_android_surface"
 
   type
