@@ -3835,6 +3835,7 @@ when defined(vkUsePlatformWaylandKhr):
     display: ptr wl_display): VkBool32
     {.cdecl, importc.}
 
+
 when defined(vkUsePlatformMirKhr):
   const
     vkKhrMirSurface* = 1
@@ -3947,4 +3948,124 @@ when defined(vkUsePlatformWin32Khr):
   proc vkGetPhysicalDeviceWin32PresentationSupportKHR*(
     physicalDevice: VkPhysicalDevice;
     queueFamilyIndex: uint32): VkBool32
+    {.cdecl, importc.}
+
+
+const
+  VK_EXT_debug_report* = 1
+
+type
+  VkDebugReportCallbackEXT* = pointer
+
+const
+  VK_EXT_DEBUG_REPORT_SPEC_VERSION* = 1
+  VK_EXT_DEBUG_REPORT_EXTENSION_NAME* = "VK_EXT_debug_report"
+
+type
+  VkDebugReportObjectTypeEXT* = enum
+    unknownExt = 0,
+    instanceExt = 1,
+    physicalDeviceExt = 2,
+    deviceExt = 3,
+    queueExt = 4,
+    semaphoreExt = 5,
+    commandBufferExt = 6,
+    fenceExt = 7,
+    deviceMemoryExt = 8,
+    bufferExt = 9,
+    imageExt = 10,
+    eventExt = 11,
+    queryPoolExt = 12,
+    bufferViewExt = 13,
+    imageViewExt = 14,
+    shaderModuleExt = 15,
+    pipelineCacheExt = 16,
+    pipelineLayoutExt = 17,
+    renderPassExt = 18,
+    pipelineExt = 19,
+    descriptorSetLayoutExt = 20,
+    samplerExt = 21,
+    descriptorPoolExt = 22,
+    descriptorSetExt = 23,
+    framebufferExt = 24,
+    commandPoolExt = 25,
+    surfaceKhrExt = 26,
+    swapchainKhrExt = 27,
+    debugReportExt = 28
+
+  VkDebugReportErrorEXT* = enum
+    noneExt = 0,
+    callbackRefExt = 1
+
+  VkDebugReportFlagBitsEXT* = enum
+    informationBitExt = 0x00000001,
+    warningBitExt = 0x00000002,
+    performanceWarningBitExt = 0x00000004,
+    errorBitExt = 0x00000008,
+    debugBitExt = 0x00000010
+
+  VkDebugReportFlagsEXT* = VkFlags
+
+  PFN_vkDebugReportCallbackEXT* = proc (
+    flags: VkDebugReportFlagsEXT;
+    objectType: VkDebugReportObjectTypeEXT;
+    obj: uint64;
+    location: csize;
+    messageCode: int32;
+    pLayerPrefix: cstring;
+    pMessage: cstring;
+    pUserData: pointer): VkBool32
+
+  VkDebugReportCallbackCreateInfoEXT* = object
+    sType*: VkStructureType
+    pNext*: pointer
+    flags*: VkDebugReportFlagsEXT
+    pfnCallback*: PFN_vkDebugReportCallbackEXT
+    pUserData*: pointer
+
+  PFN_vkCreateDebugReportCallbackEXT* = proc (
+    instance: VkInstance;
+    pCreateInfo: ptr VkDebugReportCallbackCreateInfoEXT;
+    pAllocator: ptr VkAllocationCallbacks;
+    pCallback: ptr VkDebugReportCallbackEXT): VkResult
+
+  PFN_vkDestroyDebugReportCallbackEXT* = proc (
+    instance: VkInstance;
+    callback: VkDebugReportCallbackEXT;
+    pAllocator: ptr VkAllocationCallbacks)
+
+  PFN_vkDebugReportMessageEXT* = proc (
+    instance: VkInstance;
+    flags: VkDebugReportFlagsEXT;
+    objectType: VkDebugReportObjectTypeEXT;
+    obj: uint64;
+    location: csize;
+    messageCode: int32;
+    pLayerPrefix: cstring;
+    pMessage: cstring)
+
+
+when not defined(VK_NO_PROTOTYPES):
+  proc vkCreateDebugReportCallbackEXT*(
+    instance: VkInstance;
+    pCreateInfo: ptr VkDebugReportCallbackCreateInfoEXT;
+    pAllocator: ptr VkAllocationCallbacks;
+    pCallback: ptr VkDebugReportCallbackEXT): VkResult
+    {.cdecl, importc.}
+
+  proc vkDestroyDebugReportCallbackEXT*(
+    instance: VkInstance;
+    callback: VkDebugReportCallbackEXT;
+    pAllocator: ptr VkAllocationCallbacks)
+    {.cdecl, importc.}
+
+  proc vkDebugReportMessageEXT*(
+    instance: VkInstance;
+    flags: VkDebugReportFlagsEXT;
+    objectType: VkDebugReportObjectTypeEXT;
+    obj: uint64;
+    location: csize;
+    messageCode: int32;
+    pLayerPrefix: cstring;
+    pMessage: cstring)
     {.cdecl, importc.}
