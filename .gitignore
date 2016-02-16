@@ -1,1 +1,6 @@
+material/
 nimcache/
+.directory
+*.dll
+*.exe
+*.sublime*
