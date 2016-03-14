@@ -19,7 +19,7 @@ template vkMakeVersion*(major, minor, patch: expr): expr =
   ((major shl 22) or (minor shl 12) or patch)
 
 const
-  vkApiVersion* = vkMakeVersion(1, 0, 3)
+  vkApiVersion* = vkMakeVersion(1, 0, 5)
   vkNullHandle* = 0
 
 type
@@ -81,6 +81,7 @@ type
     one = 1
 
   VkResult* {.pure, size: sizeof(cint).} = enum
+    errorInvalidShaderNv = -1000012000,
     errorValidationFailedExt = - 1000011001,
     errorIncompatibleDisplayKhr = - 1000003001,
     errorOutOfDateKhr = - 1000001004,
@@ -166,7 +167,7 @@ type
     mirSurfaceCreateInfoKhr = 1000007000,
     androidSurfaceCreateInfoKhr = 1000008000,
     win32SurfaceCreateInfoKhr = 1000009000,
-    debugReportCreateInfoExt = 1000011000,
+    debugReportCallbackCreateInfoExt = 1000011000,
 
   VkSystemAllocationScope* {.pure, size: sizeof(cint).} = enum
     command = 0,
@@ -3288,14 +3289,14 @@ proc vkCmdExecuteCommands*(
   {.cdecl, importc.}
 
 const
-  VK_KHR_surface* = 1
+  vkKHRSurface* = 1
 
 type
   VkSurfaceKHR* = pointer
 
 const
-  VK_KHR_SURFACE_SPEC_VERSION* = 25
-  VK_KHR_SURFACE_EXTENSION_NAME* = "VK_KHR_surface"
+  vkKhrSurfaceSpecVersion* = 25
+  vkKhrSurfaceExtensionName* = "VK_KHR_surface"
 
 type
   VkColorSpaceKHR* {.pure, size: sizeof(cint).} = enum
@@ -3408,7 +3409,7 @@ proc vkGetPhysicalDeviceSurfacePresentModesKHR*(
   {.cdecl, importc.}
 
 const
-  VK_KHR_swapchain* = 1
+  vkKHRSwapchain* = 1
 
 type
   VkSwapchainKHR* = pointer
@@ -3532,8 +3533,8 @@ type
     perPixelBitKhr = 0x00000004,
     perPixelPremultipliedBitKhr = 0x00000008
 
-  VkDisplayModeCreateFlagsKHR* = VkFlags
   VkDisplayPlaneAlphaFlagsKHR* = VkFlags
+  VkDisplayModeCreateFlagsKHR* = VkFlags
   VkDisplaySurfaceCreateFlagsKHR* = VkFlags
 
 type
@@ -3950,16 +3951,21 @@ when defined(vkUsePlatformWin32Khr):
     queueFamilyIndex: uint32): VkBool32
     {.cdecl, importc.}
 
+const
+  vkKHRSamplerMirrorClampToEdge* = 1
+  vkKHRSamplerMirrorClampToEdgeSpecVersion* = 1
+  vkKHRSamplerMirrorClampToEdgeExtensionName* =
+    "VK_KHR_sampler_mirror_clamp_to_edge"
 
 const
-  VK_EXT_debug_report* = 1
+  vkExtDebugReport* = 1
 
 type
   VkDebugReportCallbackEXT* = pointer
 
 const
-  VK_EXT_DEBUG_REPORT_SPEC_VERSION* = 1
-  VK_EXT_DEBUG_REPORT_EXTENSION_NAME* = "VK_EXT_debug_report"
+  vkExtDebugReportSpecVersion* = 2
+  vkExtDebugReportExtensionName* = "VK_EXT_debug_report"
 
 type
   VkDebugReportObjectTypeEXT* = enum
@@ -4069,3 +4075,8 @@ when not defined(VK_NO_PROTOTYPES):
     pLayerPrefix: cstring;
     pMessage: cstring)
     {.cdecl, importc.}
+
+const
+  vkNvGlslShader* = 1
+  vkNvGlslShaderSpecVersion* = 1
+  vkNvGlslShaderExtensionName* = "VK_NV_glsl_shader"
