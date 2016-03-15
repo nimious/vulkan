@@ -1,4 +1,4 @@
-## *io-vulkan* - Nim bindings for libusb, the API for access to graphics and
+## *vulkan* - Nim bindings for libusb, the API for access to graphics and
 ## compute on GPUs.
 ##
 ## This file is part of the `Nim I/O <http://nimio.us>`_ package collection.
