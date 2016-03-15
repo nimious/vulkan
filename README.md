@@ -32,7 +32,9 @@ Download and install the latest *Vulkan SDK* from the Khronos download page.
 
 The version of GCC that currently ships with Nim seems to have trouble linking
 the Vulkan library. The bindings have been tested with the 64-bit version of
-GCC 5.3.0 instead, which can be obtained via MSYS2 (see link below).
+GCC 5.3.0 instead, which can be obtained via MSYS2 (see link below). Detailed
+instructions will follow soon.
+
 
 ## Dependencies
 
@@ -46,13 +48,6 @@ your project:
 
 ```nimrod
 import vulkan
-```
-
-Make sure to link your program with the correct Vulkan static library on your
-platform, i.e. *vulkan-1.lib* on Windows:
-
-```
---passL:vulkan-1.lib
 ```
 
 
