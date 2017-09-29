@@ -62,7 +62,7 @@ if queueCount == 0:
 # find a graphics queue
 var queueIndex = -1
 for i in 0 .. <int(queueCount):
-  if (queueProps[i].queueFlags and vkQueueGraphicsBit) != 0:
+  if (queueProps[i].queueFlags and ord(VkQueueFlagBits.graphics)) != 0:
     queueIndex = i
     break
 if queueIndex == -1:

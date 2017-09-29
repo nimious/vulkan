@@ -7,8 +7,9 @@
 
 import strutils, vulkan
 
-let major = vkApiVersion shr 22
-let minor = (vkApiVersion shr 12) and 0x3ff
-let patch = vkApiVersion and 0xfff
+let major = vkApiVersion10 shr 22
+let minor = (vkApiVersion10 shr 12) and 0x3ff
+let patch = vkApiVersion10 and 0xfff
 
-echo "Vulkan API Version: $#.$#.$#\n" % [$major, $minor, $patch]
+echo "Vulkan API Version: $#.$#.$#" % [$major, $minor, $patch]
+echo "Vulkan Header Version: $#" % [$vkHeaderVersion]
