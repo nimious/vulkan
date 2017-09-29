@@ -16,7 +16,7 @@ platforms.
 
 ## Supported Platforms
 
-This package was last built and tested with **Vulkan 1.0.5.0**. The bindings
+This package was last built and tested with **Vulkan 1.0.61.1**. The bindings
 currently support the following platforms:
 
 - ~~Android~~
@@ -27,13 +27,6 @@ currently support the following platforms:
 ## Prerequisites
 
 Download and install the latest *Vulkan SDK* from the Khronos download page.
-
-### Windows
-
-The version of GCC that currently ships with Nim seems to have trouble linking
-the Vulkan library. The bindings have been tested with the 64-bit version of
-GCC 5.3.0 instead, which can be obtained via MSYS2 (see link below). Detailed
-instructions will follow soon.
 
 
 ## Dependencies
@@ -55,7 +48,7 @@ import vulkan
 
 Please [file an issue](https://github.com/nimious/vulkan/issues), submit a
 [pull request](https://github.com/nimious/vulkan/pulls?q=is%3Aopen+is%3Apr)
-or email us at info@nimio.us if this package is out of date or contains bugs.
+or email us at info@headcrash.industries if this package is out of date or contains bugs.
 
 
 ## References
