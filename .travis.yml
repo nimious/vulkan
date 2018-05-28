@@ -17,7 +17,13 @@ before_script:
   - export PATH=`pwd`/nim-0.17.2/bin:$PATH
 
 script:
-  - cd tests
-  - nim c -r tester
+  - cd src
+  - nim c -r vulkan
+  - cd ..
+  - cd examples
+  - nim c -r device
+  - nim c -r enumerate
+  - nim c -r instance
+  - nim c -r version
   - cd ..
   - ./src/nimble install -y
