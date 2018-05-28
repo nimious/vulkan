@@ -20,4 +20,4 @@ script:
   - cd src
   - nim c -r vulkan
   - cd ..
-  - ./src/nimble install -y
+  - ./src/vulkan install -y
