@@ -20,7 +20,7 @@ This package was last built and tested with **Vulkan 1.0.61.1**. The bindings
 currently support the following platforms:
 
 - ~~Android~~
-- ~~Linux~~
+- Linux
 - Windows
 
 
