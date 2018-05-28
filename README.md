@@ -1,4 +1,4 @@
-# vulkan [![Build Status](https://travis-ci.org/nimious/vulkan.svg?branch=master)](https://travis-ci.org/nimious/vulkan)
+# vulkan [![Build Status](https://travis-ci.com/nimious/vulkan.svg?branch=master)](https://travis-ci.com/nimious/vulkan)
 
 Nim bindings for Vulkan, the API for access to graphics and compute on GPUs.
 
