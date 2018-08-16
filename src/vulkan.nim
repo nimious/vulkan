@@ -1254,11 +1254,11 @@ type
     enabledExtensionCount*: uint32
     ppEnabledExtensionNames*: cstringArray
 
-  PFN_vkAllocationFunction* = proc (pUserData: pointer; size: csize; alignment: csize; allocationScope: VkSystemAllocationScope): pointer
-  PFN_vkReallocationFunction* = proc (pUserData: pointer; pOriginal: pointer; size: csize; alignment: csize; allocationScope: VkSystemAllocationScope): pointer
-  PFN_vkFreeFunction* = proc (pUserData: pointer; pMemory: pointer)
-  PFN_vkInternalAllocationNotification* = proc (pUserData: pointer; size: csize; allocationType: VkInternalAllocationType; allocationScope: VkSystemAllocationScope)
-  PFN_vkInternalFreeNotification* = proc (pUserData: pointer; size: csize; allocationType: VkInternalAllocationType; allocationScope: VkSystemAllocationScope)
+  PFN_vkAllocationFunction* = proc (pUserData: pointer; size: csize; alignment: csize; allocationScope: VkSystemAllocationScope): pointer {.cdecl.}
+  PFN_vkReallocationFunction* = proc (pUserData: pointer; pOriginal: pointer; size: csize; alignment: csize; allocationScope: VkSystemAllocationScope): pointer {.cdecl.}
+  PFN_vkFreeFunction* = proc (pUserData: pointer; pMemory: pointer) {.cdecl.}
+  PFN_vkInternalAllocationNotification* = proc (pUserData: pointer; size: csize; allocationType: VkInternalAllocationType; allocationScope: VkSystemAllocationScope) {.cdecl.}
+  PFN_vkInternalFreeNotification* = proc (pUserData: pointer; size: csize; allocationType: VkInternalAllocationType; allocationScope: VkSystemAllocationScope) {.cdecl.}
   
   VkAllocationCallbacks* = object
     pUserData*: pointer
@@ -1488,7 +1488,7 @@ type
     memoryHeapCount*: uint32
     memoryHeaps*: array[vkMaxMemoryHeaps, VkMemoryHeap]
 
-  PFN_vkVoidFunction* = proc ()
+  PFN_vkVoidFunction* = proc () {.cdecl.}
 
   VkDeviceQueueCreateInfo* = object
     sType*: VkStructureType
@@ -2211,143 +2211,143 @@ type
     firstVertex*: uint32
     firstInstance*: uint32
 
-  PFN_vkCreateInstance* = proc (pCreateInfo: ptr VkInstanceCreateInfo; pAllocator: ptr VkAllocationCallbacks; pInstance: ptr VkInstance): VkResult
-  PFN_vkDestroyInstance* = proc (instance: VkInstance; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkEnumeratePhysicalDevices* = proc (instance: VkInstance; pPhysicalDeviceCount: ptr uint32; pPhysicalDevices: ptr VkPhysicalDevice): VkResult
-  PFN_vkGetPhysicalDeviceFeatures* = proc (physicalDevice: VkPhysicalDevice; pFeatures: ptr VkPhysicalDeviceFeatures)
-  PFN_vkGetPhysicalDeviceFormatProperties* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; pFormatProperties: ptr VkFormatProperties)
-  PFN_vkGetPhysicalDeviceImageFormatProperties* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; imageType: VkImageType; tiling: VkImageTiling; usage: VkImageUsageFlags; flags: VkImageCreateFlags; pImageFormatProperties: ptr VkImageFormatProperties): VkResult
-  PFN_vkGetPhysicalDeviceProperties* = proc (physicalDevice: VkPhysicalDevice; pProperties: ptr VkPhysicalDeviceProperties)
-  PFN_vkGetPhysicalDeviceQueueFamilyProperties* = proc (physicalDevice: VkPhysicalDevice; pQueueFamilyPropertyCount: ptr uint32; pQueueFamilyProperties: ptr VkQueueFamilyProperties)
-  PFN_vkGetPhysicalDeviceMemoryProperties* = proc (physicalDevice: VkPhysicalDevice; pMemoryProperties: ptr VkPhysicalDeviceMemoryProperties)
-  PFN_vkGetInstanceProcAddr* = proc (instance: VkInstance; pName: cstring): PFN_vkVoidFunction
-  PFN_vkGetDeviceProcAddr* = proc (device: VkDevice; pName: cstring): PFN_vkVoidFunction
-  PFN_vkCreateDevice* = proc (physicalDevice: VkPhysicalDevice; pCreateInfo: ptr VkDeviceCreateInfo; pAllocator: ptr VkAllocationCallbacks; pDevice: ptr VkDevice): VkResult
-  PFN_vkDestroyDevice* = proc (device: VkDevice; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkEnumerateInstanceExtensionProperties* = proc (pLayerName: cstring; pPropertyCount: ptr uint32; pProperties: ptr VkExtensionProperties): VkResult
-  PFN_vkEnumerateDeviceExtensionProperties* = proc (physicalDevice: VkPhysicalDevice; pLayerName: cstring; pPropertyCount: ptr uint32; pProperties: ptr VkExtensionProperties): VkResult
-  PFN_vkEnumerateInstanceLayerProperties* = proc (pPropertyCount: ptr uint32; pProperties: ptr VkLayerProperties): VkResult
-  PFN_vkEnumerateDeviceLayerProperties* = proc (physicalDevice: VkPhysicalDevice; pPropertyCount: ptr uint32; pProperties: ptr VkLayerProperties): VkResult
-  PFN_vkGetDeviceQueue* = proc (device: VkDevice; queueFamilyIndex: uint32; queueIndex: uint32; pQueue: ptr VkQueue)
-  PFN_vkQueueSubmit* = proc (queue: VkQueue; submitCount: uint32; pSubmits: ptr VkSubmitInfo; fence: VkFence): VkResult
-  PFN_vkQueueWaitIdle* = proc (queue: VkQueue): VkResult
-  PFN_vkDeviceWaitIdle* = proc (device: VkDevice): VkResult
-  PFN_vkAllocateMemory* = proc (device: VkDevice; pAllocateInfo: ptr VkMemoryAllocateInfo; pAllocator: ptr VkAllocationCallbacks; pMemory: ptr VkDeviceMemory): VkResult
-  PFN_vkFreeMemory* = proc (device: VkDevice; memory: VkDeviceMemory; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkMapMemory* = proc (device: VkDevice; memory: VkDeviceMemory; offset: VkDeviceSize; size: VkDeviceSize; flags: VkMemoryMapFlags; ppData: ptr pointer): VkResult
-  PFN_vkUnmapMemory* = proc (device: VkDevice; memory: VkDeviceMemory)
-  PFN_vkFlushMappedMemoryRanges* = proc (device: VkDevice; memoryRangeCount: uint32; pMemoryRanges: ptr VkMappedMemoryRange): VkResult
-  PFN_vkInvalidateMappedMemoryRanges* = proc (device: VkDevice; memoryRangeCount: uint32; pMemoryRanges: ptr VkMappedMemoryRange): VkResult
-  PFN_vkGetDeviceMemoryCommitment* = proc (device: VkDevice; memory: VkDeviceMemory; pCommittedMemoryInBytes: ptr VkDeviceSize)
-  PFN_vkBindBufferMemory* = proc (device: VkDevice; buffer: VkBuffer; memory: VkDeviceMemory; memoryOffset: VkDeviceSize): VkResult
-  PFN_vkBindImageMemory* = proc (device: VkDevice; image: VkImage; memory: VkDeviceMemory; memoryOffset: VkDeviceSize): VkResult
-  PFN_vkGetBufferMemoryRequirements* = proc (device: VkDevice; buffer: VkBuffer; pMemoryRequirements: ptr VkMemoryRequirements)
-  PFN_vkGetImageMemoryRequirements* = proc (device: VkDevice; image: VkImage; pMemoryRequirements: ptr VkMemoryRequirements)
-  PFN_vkGetImageSparseMemoryRequirements* = proc (device: VkDevice; image: VkImage; pSparseMemoryRequirementCount: ptr uint32; pSparseMemoryRequirements: ptr VkSparseImageMemoryRequirements)
-  PFN_vkGetPhysicalDeviceSparseImageFormatProperties* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; imageType: VkImageType; samples: VkSampleCountFlagBits; usage: VkImageUsageFlags; tiling: VkImageTiling; pPropertyCount: ptr uint32; pProperties: ptr VkSparseImageFormatProperties)
-  PFN_vkQueueBindSparse* = proc (queue: VkQueue; bindInfoCount: uint32; pBindInfo: ptr VkBindSparseInfo; fence: VkFence): VkResult
-  PFN_vkCreateFence* = proc (device: VkDevice; pCreateInfo: ptr VkFenceCreateInfo; pAllocator: ptr VkAllocationCallbacks; pFence: ptr VkFence): VkResult
-  PFN_vkDestroyFence* = proc (device: VkDevice; fence: VkFence; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkResetFences* = proc (device: VkDevice; fenceCount: uint32; pFences: ptr VkFence): VkResult
-  PFN_vkGetFenceStatus* = proc (device: VkDevice; fence: VkFence): VkResult
-  PFN_vkWaitForFences* = proc (device: VkDevice; fenceCount: uint32; pFences: ptr VkFence; waitAll: VkBool32; timeout: uint64): VkResult
-  PFN_vkCreateSemaphore* = proc (device: VkDevice; pCreateInfo: ptr VkSemaphoreCreateInfo; pAllocator: ptr VkAllocationCallbacks; pSemaphore: ptr VkSemaphore): VkResult
-  PFN_vkDestroySemaphore* = proc (device: VkDevice; semaphore: VkSemaphore; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateEvent* = proc (device: VkDevice; pCreateInfo: ptr VkEventCreateInfo; pAllocator: ptr VkAllocationCallbacks; pEvent: ptr VkEvent): VkResult
-  PFN_vkDestroyEvent* = proc (device: VkDevice; event: VkEvent; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkGetEventStatus* = proc (device: VkDevice; event: VkEvent): VkResult
-  PFN_vkSetEvent* = proc (device: VkDevice; event: VkEvent): VkResult
-  PFN_vkResetEvent* = proc (device: VkDevice; event: VkEvent): VkResult
-  PFN_vkCreateQueryPool* = proc (device: VkDevice; pCreateInfo: ptr VkQueryPoolCreateInfo; pAllocator: ptr VkAllocationCallbacks; pQueryPool: ptr VkQueryPool): VkResult
-  PFN_vkDestroyQueryPool* = proc (device: VkDevice; queryPool: VkQueryPool; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkGetQueryPoolResults* = proc (device: VkDevice; queryPool: VkQueryPool; firstQuery: uint32; queryCount: uint32; dataSize: csize; pData: pointer; stride: VkDeviceSize; flags: VkQueryResultFlags): VkResult
-  PFN_vkCreateBuffer* = proc (device: VkDevice; pCreateInfo: ptr VkBufferCreateInfo; pAllocator: ptr VkAllocationCallbacks; pBuffer: ptr VkBuffer): VkResult
-  PFN_vkDestroyBuffer* = proc (device: VkDevice; buffer: VkBuffer; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateBufferView* = proc (device: VkDevice; pCreateInfo: ptr VkBufferViewCreateInfo; pAllocator: ptr VkAllocationCallbacks; pView: ptr VkBufferView): VkResult
-  PFN_vkDestroyBufferView* = proc (device: VkDevice; bufferView: VkBufferView; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateImage* = proc (device: VkDevice; pCreateInfo: ptr VkImageCreateInfo; pAllocator: ptr VkAllocationCallbacks; pImage: ptr VkImage): VkResult
-  PFN_vkDestroyImage* = proc (device: VkDevice; image: VkImage; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkGetImageSubresourceLayout* = proc (device: VkDevice; image: VkImage; pSubresource: ptr VkImageSubresource; pLayout: ptr VkSubresourceLayout)
-  PFN_vkCreateImageView* = proc (device: VkDevice; pCreateInfo: ptr VkImageViewCreateInfo; pAllocator: ptr VkAllocationCallbacks; pView: ptr VkImageView): VkResult
-  PFN_vkDestroyImageView* = proc (device: VkDevice; imageView: VkImageView; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateShaderModule* = proc (device: VkDevice; pCreateInfo: ptr VkShaderModuleCreateInfo; pAllocator: ptr VkAllocationCallbacks; pShaderModule: ptr VkShaderModule): VkResult
-  PFN_vkDestroyShaderModule* = proc (device: VkDevice; shaderModule: VkShaderModule; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreatePipelineCache* = proc (device: VkDevice; pCreateInfo: ptr VkPipelineCacheCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelineCache: ptr VkPipelineCache): VkResult
-  PFN_vkDestroyPipelineCache* = proc (device: VkDevice; pipelineCache: VkPipelineCache; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkGetPipelineCacheData* = proc (device: VkDevice; pipelineCache: VkPipelineCache; pDataSize: ptr csize; pData: pointer): VkResult
-  PFN_vkMergePipelineCaches* = proc (device: VkDevice; dstCache: VkPipelineCache; srcCacheCount: uint32; pSrcCaches: ptr VkPipelineCache): VkResult
-  PFN_vkCreateGraphicsPipelines* = proc (device: VkDevice; pipelineCache: VkPipelineCache; createInfoCount: uint32; pCreateInfos: ptr VkGraphicsPipelineCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelines: ptr VkPipeline): VkResult
-  PFN_vkCreateComputePipelines* = proc (device: VkDevice; pipelineCache: VkPipelineCache; createInfoCount: uint32; pCreateInfos: ptr VkComputePipelineCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelines: ptr VkPipeline): VkResult
-  PFN_vkDestroyPipeline* = proc (device: VkDevice; pipeline: VkPipeline; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreatePipelineLayout* = proc (device: VkDevice; pCreateInfo: ptr VkPipelineLayoutCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelineLayout: ptr VkPipelineLayout): VkResult
-  PFN_vkDestroyPipelineLayout* = proc (device: VkDevice; pipelineLayout: VkPipelineLayout; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateSampler* = proc (device: VkDevice; pCreateInfo: ptr VkSamplerCreateInfo; pAllocator: ptr VkAllocationCallbacks; pSampler: ptr VkSampler): VkResult
-  PFN_vkDestroySampler* = proc (device: VkDevice; sampler: VkSampler; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateDescriptorSetLayout* = proc (device: VkDevice; pCreateInfo: ptr VkDescriptorSetLayoutCreateInfo; pAllocator: ptr VkAllocationCallbacks; pSetLayout: ptr VkDescriptorSetLayout): VkResult
-  PFN_vkDestroyDescriptorSetLayout* = proc (device: VkDevice; descriptorSetLayout: VkDescriptorSetLayout; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateDescriptorPool* = proc (device: VkDevice; pCreateInfo: ptr VkDescriptorPoolCreateInfo; pAllocator: ptr VkAllocationCallbacks; pDescriptorPool: ptr VkDescriptorPool): VkResult
-  PFN_vkDestroyDescriptorPool* = proc (device: VkDevice; descriptorPool: VkDescriptorPool; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkResetDescriptorPool* = proc (device: VkDevice; descriptorPool: VkDescriptorPool; flags: VkDescriptorPoolResetFlags): VkResult
-  PFN_vkAllocateDescriptorSets* = proc (device: VkDevice; pAllocateInfo: ptr VkDescriptorSetAllocateInfo; pDescriptorSets: ptr VkDescriptorSet): VkResult
-  PFN_vkFreeDescriptorSets* = proc (device: VkDevice; descriptorPool: VkDescriptorPool; descriptorSetCount: uint32; pDescriptorSets: ptr VkDescriptorSet): VkResult
-  PFN_vkUpdateDescriptorSets* = proc (device: VkDevice; descriptorWriteCount: uint32; pDescriptorWrites: ptr VkWriteDescriptorSet; descriptorCopyCount: uint32; pDescriptorCopies: ptr VkCopyDescriptorSet)
-  PFN_vkCreateFramebuffer* = proc (device: VkDevice; pCreateInfo: ptr VkFramebufferCreateInfo; pAllocator: ptr VkAllocationCallbacks; pFramebuffer: ptr VkFramebuffer): VkResult
-  PFN_vkDestroyFramebuffer* = proc (device: VkDevice; framebuffer: VkFramebuffer; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateRenderPass* = proc (device: VkDevice; pCreateInfo: ptr VkRenderPassCreateInfo; pAllocator: ptr VkAllocationCallbacks; pRenderPass: ptr VkRenderPass): VkResult
-  PFN_vkDestroyRenderPass* = proc (device: VkDevice; renderPass: VkRenderPass; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkGetRenderAreaGranularity* = proc (device: VkDevice; renderPass: VkRenderPass; pGranularity: ptr VkExtent2D)
-  PFN_vkCreateCommandPool* = proc (device: VkDevice; pCreateInfo: ptr VkCommandPoolCreateInfo; pAllocator: ptr VkAllocationCallbacks; pCommandPool: ptr VkCommandPool): VkResult
-  PFN_vkDestroyCommandPool* = proc (device: VkDevice; commandPool: VkCommandPool; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkResetCommandPool* = proc (device: VkDevice; commandPool: VkCommandPool; flags: VkCommandPoolResetFlags): VkResult
-  PFN_vkAllocateCommandBuffers* = proc (device: VkDevice; pAllocateInfo: ptr VkCommandBufferAllocateInfo; pCommandBuffers: ptr VkCommandBuffer): VkResult
-  PFN_vkFreeCommandBuffers* = proc (device: VkDevice; commandPool: VkCommandPool; commandBufferCount: uint32; pCommandBuffers: ptr VkCommandBuffer)
-  PFN_vkBeginCommandBuffer* = proc (commandBuffer: VkCommandBuffer; pBeginInfo: ptr VkCommandBufferBeginInfo): VkResult
-  PFN_vkEndCommandBuffer* = proc (commandBuffer: VkCommandBuffer): VkResult
-  PFN_vkResetCommandBuffer* = proc (commandBuffer: VkCommandBuffer; flags: VkCommandBufferResetFlags): VkResult
-  PFN_vkCmdBindPipeline* = proc (commandBuffer: VkCommandBuffer; pipelineBindPoint: VkPipelineBindPoint; pipeline: VkPipeline)
-  PFN_vkCmdSetViewport* = proc (commandBuffer: VkCommandBuffer; firstViewport: uint32; viewportCount: uint32; pViewports: ptr VkViewport)
-  PFN_vkCmdSetScissor* = proc (commandBuffer: VkCommandBuffer; firstScissor: uint32; scissorCount: uint32; pScissors: ptr VkRect2D)
-  PFN_vkCmdSetLineWidth* = proc (commandBuffer: VkCommandBuffer; lineWidth: cfloat)
-  PFN_vkCmdSetDepthBias* = proc (commandBuffer: VkCommandBuffer; depthBiasConstantFactor: cfloat; depthBiasClamp: cfloat; depthBiasSlopeFactor: cfloat)
-  PFN_vkCmdSetBlendConstants* = proc (commandBuffer: VkCommandBuffer; blendConstants: array[4, cfloat])
-  PFN_vkCmdSetDepthBounds* = proc (commandBuffer: VkCommandBuffer; minDepthBounds: cfloat; maxDepthBounds: cfloat)
-  PFN_vkCmdSetStencilCompareMask* = proc (commandBuffer: VkCommandBuffer; faceMask: VkStencilFaceFlags; compareMask: uint32)
-  PFN_vkCmdSetStencilWriteMask* = proc (commandBuffer: VkCommandBuffer; faceMask: VkStencilFaceFlags; writeMask: uint32)
-  PFN_vkCmdSetStencilReference* = proc (commandBuffer: VkCommandBuffer; faceMask: VkStencilFaceFlags; reference: uint32)
-  PFN_vkCmdBindDescriptorSets* = proc (commandBuffer: VkCommandBuffer; pipelineBindPoint: VkPipelineBindPoint; layout: VkPipelineLayout; firstSet: uint32; descriptorSetCount: uint32; pDescriptorSets: ptr VkDescriptorSet; dynamicOffsetCount: uint32; pDynamicOffsets: ptr uint32)
-  PFN_vkCmdBindIndexBuffer* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; indexType: VkIndexType)
-  PFN_vkCmdBindVertexBuffers* = proc (commandBuffer: VkCommandBuffer; firstBinding: uint32; bindingCount: uint32; pBuffers: ptr VkBuffer; pOffsets: ptr VkDeviceSize)
-  PFN_vkCmdDraw* = proc (commandBuffer: VkCommandBuffer; vertexCount: uint32; instanceCount: uint32; firstVertex: uint32; firstInstance: uint32)
-  PFN_vkCmdDrawIndexed* = proc (commandBuffer: VkCommandBuffer; indexCount: uint32; instanceCount: uint32; firstIndex: uint32; vertexOffset:  int32; firstInstance: uint32)
-  PFN_vkCmdDrawIndirect* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; drawCount: uint32; stride: uint32)
-  PFN_vkCmdDrawIndexedIndirect* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; drawCount: uint32; stride: uint32)
-  PFN_vkCmdDispatch* = proc (commandBuffer: VkCommandBuffer; groupCountX: uint32; groupCountY: uint32; groupCountZ: uint32)
-  PFN_vkCmdDispatchIndirect* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize)
-  PFN_vkCmdCopyBuffer* = proc (commandBuffer: VkCommandBuffer; srcBuffer: VkBuffer; dstBuffer: VkBuffer; regionCount: uint32; pRegions: ptr VkBufferCopy)
-  PFN_vkCmdCopyImage* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkImageCopy)
-  PFN_vkCmdBlitImage* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkImageBlit; filter: VkFilter)
-  PFN_vkCmdCopyBufferToImage* = proc (commandBuffer: VkCommandBuffer; srcBuffer: VkBuffer; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkBufferImageCopy)
-  PFN_vkCmdCopyImageToBuffer* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstBuffer: VkBuffer; regionCount: uint32; pRegions: ptr VkBufferImageCopy)
-  PFN_vkCmdUpdateBuffer* = proc (commandBuffer: VkCommandBuffer; dstBuffer: VkBuffer; dstOffset: VkDeviceSize; dataSize: VkDeviceSize; pData: pointer)
-  PFN_vkCmdFillBuffer* = proc (commandBuffer: VkCommandBuffer; dstBuffer: VkBuffer; dstOffset: VkDeviceSize; size: VkDeviceSize; data: uint32)
-  PFN_vkCmdClearColorImage* = proc (commandBuffer: VkCommandBuffer; image: VkImage; imageLayout: VkImageLayout; pColor: ptr VkClearColorValue; rangeCount: uint32; pRanges: ptr VkImageSubresourceRange)
-  PFN_vkCmdClearDepthStencilImage* = proc (commandBuffer: VkCommandBuffer; image: VkImage; imageLayout: VkImageLayout; pDepthStencil: ptr VkClearDepthStencilValue; rangeCount: uint32; pRanges: ptr VkImageSubresourceRange)
-  PFN_vkCmdClearAttachments* = proc (commandBuffer: VkCommandBuffer; attachmentCount: uint32; pAttachments: ptr VkClearAttachment; rectCount: uint32; pRects: ptr VkClearRect)
-  PFN_vkCmdResolveImage* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkImageResolve)
-  PFN_vkCmdSetEvent* = proc (commandBuffer: VkCommandBuffer; event: VkEvent; stageMask: VkPipelineStageFlags)
-  PFN_vkCmdResetEvent* = proc (commandBuffer: VkCommandBuffer; event: VkEvent; stageMask: VkPipelineStageFlags)
-  PFN_vkCmdWaitEvents* = proc (commandBuffer: VkCommandBuffer; eventCount: uint32; pEvents: ptr VkEvent; srcStageMask: VkPipelineStageFlags; dstStageMask: VkPipelineStageFlags; memoryBarrierCount: uint32; pMemoryBarriers: ptr VkMemoryBarrier; bufferMemoryBarrierCount: uint32; pBufferMemoryBarriers: ptr VkBufferMemoryBarrier; imageMemoryBarrierCount: uint32; pImageMemoryBarriers: ptr VkImageMemoryBarrier)
-  PFN_vkCmdPipelineBarrier* = proc (commandBuffer: VkCommandBuffer; srcStageMask: VkPipelineStageFlags; dstStageMask: VkPipelineStageFlags; dependencyFlags: VkDependencyFlags; memoryBarrierCount: uint32; pMemoryBarriers: ptr VkMemoryBarrier; bufferMemoryBarrierCount: uint32; pBufferMemoryBarriers: ptr VkBufferMemoryBarrier; imageMemoryBarrierCount: uint32; pImageMemoryBarriers: ptr VkImageMemoryBarrier)
-  PFN_vkCmdBeginQuery* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; query: uint32; flags: VkQueryControlFlags)
-  PFN_vkCmdEndQuery* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; query: uint32)
-  PFN_vkCmdResetQueryPool* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; firstQuery: uint32; queryCount: uint32)
-  PFN_vkCmdWriteTimestamp* = proc (commandBuffer: VkCommandBuffer; pipelineStage: VkPipelineStageFlagBits; queryPool: VkQueryPool; query: uint32)
-  PFN_vkCmdCopyQueryPoolResults* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; firstQuery: uint32; queryCount: uint32; dstBuffer: VkBuffer; dstOffset: VkDeviceSize; stride: VkDeviceSize; flags: VkQueryResultFlags)
-  PFN_vkCmdPushConstants* = proc (commandBuffer: VkCommandBuffer; layout: VkPipelineLayout; stageFlags: VkShaderStageFlags; offset: uint32; size: uint32; pValues: pointer)
-  PFN_vkCmdBeginRenderPass* = proc (commandBuffer: VkCommandBuffer; pRenderPassBegin: ptr VkRenderPassBeginInfo; contents: VkSubpassContents)
-  PFN_vkCmdNextSubpass* = proc (commandBuffer: VkCommandBuffer; contents: VkSubpassContents)
-  PFN_vkCmdEndRenderPass* = proc (commandBuffer: VkCommandBuffer)
-  PFN_vkCmdExecuteCommands* = proc (commandBuffer: VkCommandBuffer; commandBufferCount: uint32; pCommandBuffers: ptr VkCommandBuffer)
+  PFN_vkCreateInstance* = proc (pCreateInfo: ptr VkInstanceCreateInfo; pAllocator: ptr VkAllocationCallbacks; pInstance: ptr VkInstance): VkResult {.cdecl.}
+  PFN_vkDestroyInstance* = proc (instance: VkInstance; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkEnumeratePhysicalDevices* = proc (instance: VkInstance; pPhysicalDeviceCount: ptr uint32; pPhysicalDevices: ptr VkPhysicalDevice): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceFeatures* = proc (physicalDevice: VkPhysicalDevice; pFeatures: ptr VkPhysicalDeviceFeatures) {.cdecl.}
+  PFN_vkGetPhysicalDeviceFormatProperties* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; pFormatProperties: ptr VkFormatProperties) {.cdecl.}
+  PFN_vkGetPhysicalDeviceImageFormatProperties* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; imageType: VkImageType; tiling: VkImageTiling; usage: VkImageUsageFlags; flags: VkImageCreateFlags; pImageFormatProperties: ptr VkImageFormatProperties): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceProperties* = proc (physicalDevice: VkPhysicalDevice; pProperties: ptr VkPhysicalDeviceProperties) {.cdecl.}
+  PFN_vkGetPhysicalDeviceQueueFamilyProperties* = proc (physicalDevice: VkPhysicalDevice; pQueueFamilyPropertyCount: ptr uint32; pQueueFamilyProperties: ptr VkQueueFamilyProperties) {.cdecl.}
+  PFN_vkGetPhysicalDeviceMemoryProperties* = proc (physicalDevice: VkPhysicalDevice; pMemoryProperties: ptr VkPhysicalDeviceMemoryProperties) {.cdecl.}
+  PFN_vkGetInstanceProcAddr* = proc (instance: VkInstance; pName: cstring): PFN_vkVoidFunction {.cdecl.}
+  PFN_vkGetDeviceProcAddr* = proc (device: VkDevice; pName: cstring): PFN_vkVoidFunction {.cdecl.}
+  PFN_vkCreateDevice* = proc (physicalDevice: VkPhysicalDevice; pCreateInfo: ptr VkDeviceCreateInfo; pAllocator: ptr VkAllocationCallbacks; pDevice: ptr VkDevice): VkResult {.cdecl.}
+  PFN_vkDestroyDevice* = proc (device: VkDevice; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkEnumerateInstanceExtensionProperties* = proc (pLayerName: cstring; pPropertyCount: ptr uint32; pProperties: ptr VkExtensionProperties): VkResult {.cdecl.}
+  PFN_vkEnumerateDeviceExtensionProperties* = proc (physicalDevice: VkPhysicalDevice; pLayerName: cstring; pPropertyCount: ptr uint32; pProperties: ptr VkExtensionProperties): VkResult {.cdecl.}
+  PFN_vkEnumerateInstanceLayerProperties* = proc (pPropertyCount: ptr uint32; pProperties: ptr VkLayerProperties): VkResult {.cdecl.}
+  PFN_vkEnumerateDeviceLayerProperties* = proc (physicalDevice: VkPhysicalDevice; pPropertyCount: ptr uint32; pProperties: ptr VkLayerProperties): VkResult {.cdecl.}
+  PFN_vkGetDeviceQueue* = proc (device: VkDevice; queueFamilyIndex: uint32; queueIndex: uint32; pQueue: ptr VkQueue) {.cdecl.}
+  PFN_vkQueueSubmit* = proc (queue: VkQueue; submitCount: uint32; pSubmits: ptr VkSubmitInfo; fence: VkFence): VkResult {.cdecl.}
+  PFN_vkQueueWaitIdle* = proc (queue: VkQueue): VkResult {.cdecl.}
+  PFN_vkDeviceWaitIdle* = proc (device: VkDevice): VkResult {.cdecl.}
+  PFN_vkAllocateMemory* = proc (device: VkDevice; pAllocateInfo: ptr VkMemoryAllocateInfo; pAllocator: ptr VkAllocationCallbacks; pMemory: ptr VkDeviceMemory): VkResult {.cdecl.}
+  PFN_vkFreeMemory* = proc (device: VkDevice; memory: VkDeviceMemory; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkMapMemory* = proc (device: VkDevice; memory: VkDeviceMemory; offset: VkDeviceSize; size: VkDeviceSize; flags: VkMemoryMapFlags; ppData: ptr pointer): VkResult {.cdecl.}
+  PFN_vkUnmapMemory* = proc (device: VkDevice; memory: VkDeviceMemory) {.cdecl.}
+  PFN_vkFlushMappedMemoryRanges* = proc (device: VkDevice; memoryRangeCount: uint32; pMemoryRanges: ptr VkMappedMemoryRange): VkResult {.cdecl.}
+  PFN_vkInvalidateMappedMemoryRanges* = proc (device: VkDevice; memoryRangeCount: uint32; pMemoryRanges: ptr VkMappedMemoryRange): VkResult {.cdecl.}
+  PFN_vkGetDeviceMemoryCommitment* = proc (device: VkDevice; memory: VkDeviceMemory; pCommittedMemoryInBytes: ptr VkDeviceSize) {.cdecl.}
+  PFN_vkBindBufferMemory* = proc (device: VkDevice; buffer: VkBuffer; memory: VkDeviceMemory; memoryOffset: VkDeviceSize): VkResult {.cdecl.}
+  PFN_vkBindImageMemory* = proc (device: VkDevice; image: VkImage; memory: VkDeviceMemory; memoryOffset: VkDeviceSize): VkResult {.cdecl.}
+  PFN_vkGetBufferMemoryRequirements* = proc (device: VkDevice; buffer: VkBuffer; pMemoryRequirements: ptr VkMemoryRequirements) {.cdecl.}
+  PFN_vkGetImageMemoryRequirements* = proc (device: VkDevice; image: VkImage; pMemoryRequirements: ptr VkMemoryRequirements) {.cdecl.}
+  PFN_vkGetImageSparseMemoryRequirements* = proc (device: VkDevice; image: VkImage; pSparseMemoryRequirementCount: ptr uint32; pSparseMemoryRequirements: ptr VkSparseImageMemoryRequirements) {.cdecl.}
+  PFN_vkGetPhysicalDeviceSparseImageFormatProperties* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; imageType: VkImageType; samples: VkSampleCountFlagBits; usage: VkImageUsageFlags; tiling: VkImageTiling; pPropertyCount: ptr uint32; pProperties: ptr VkSparseImageFormatProperties) {.cdecl.}
+  PFN_vkQueueBindSparse* = proc (queue: VkQueue; bindInfoCount: uint32; pBindInfo: ptr VkBindSparseInfo; fence: VkFence): VkResult {.cdecl.}
+  PFN_vkCreateFence* = proc (device: VkDevice; pCreateInfo: ptr VkFenceCreateInfo; pAllocator: ptr VkAllocationCallbacks; pFence: ptr VkFence): VkResult {.cdecl.}
+  PFN_vkDestroyFence* = proc (device: VkDevice; fence: VkFence; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkResetFences* = proc (device: VkDevice; fenceCount: uint32; pFences: ptr VkFence): VkResult {.cdecl.}
+  PFN_vkGetFenceStatus* = proc (device: VkDevice; fence: VkFence): VkResult {.cdecl.}
+  PFN_vkWaitForFences* = proc (device: VkDevice; fenceCount: uint32; pFences: ptr VkFence; waitAll: VkBool32; timeout: uint64): VkResult {.cdecl.}
+  PFN_vkCreateSemaphore* = proc (device: VkDevice; pCreateInfo: ptr VkSemaphoreCreateInfo; pAllocator: ptr VkAllocationCallbacks; pSemaphore: ptr VkSemaphore): VkResult {.cdecl.}
+  PFN_vkDestroySemaphore* = proc (device: VkDevice; semaphore: VkSemaphore; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateEvent* = proc (device: VkDevice; pCreateInfo: ptr VkEventCreateInfo; pAllocator: ptr VkAllocationCallbacks; pEvent: ptr VkEvent): VkResult {.cdecl.}
+  PFN_vkDestroyEvent* = proc (device: VkDevice; event: VkEvent; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkGetEventStatus* = proc (device: VkDevice; event: VkEvent): VkResult {.cdecl.}
+  PFN_vkSetEvent* = proc (device: VkDevice; event: VkEvent): VkResult {.cdecl.}
+  PFN_vkResetEvent* = proc (device: VkDevice; event: VkEvent): VkResult {.cdecl.}
+  PFN_vkCreateQueryPool* = proc (device: VkDevice; pCreateInfo: ptr VkQueryPoolCreateInfo; pAllocator: ptr VkAllocationCallbacks; pQueryPool: ptr VkQueryPool): VkResult {.cdecl.}
+  PFN_vkDestroyQueryPool* = proc (device: VkDevice; queryPool: VkQueryPool; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkGetQueryPoolResults* = proc (device: VkDevice; queryPool: VkQueryPool; firstQuery: uint32; queryCount: uint32; dataSize: csize; pData: pointer; stride: VkDeviceSize; flags: VkQueryResultFlags): VkResult {.cdecl.}
+  PFN_vkCreateBuffer* = proc (device: VkDevice; pCreateInfo: ptr VkBufferCreateInfo; pAllocator: ptr VkAllocationCallbacks; pBuffer: ptr VkBuffer): VkResult {.cdecl.}
+  PFN_vkDestroyBuffer* = proc (device: VkDevice; buffer: VkBuffer; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateBufferView* = proc (device: VkDevice; pCreateInfo: ptr VkBufferViewCreateInfo; pAllocator: ptr VkAllocationCallbacks; pView: ptr VkBufferView): VkResult {.cdecl.}
+  PFN_vkDestroyBufferView* = proc (device: VkDevice; bufferView: VkBufferView; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateImage* = proc (device: VkDevice; pCreateInfo: ptr VkImageCreateInfo; pAllocator: ptr VkAllocationCallbacks; pImage: ptr VkImage): VkResult {.cdecl.}
+  PFN_vkDestroyImage* = proc (device: VkDevice; image: VkImage; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkGetImageSubresourceLayout* = proc (device: VkDevice; image: VkImage; pSubresource: ptr VkImageSubresource; pLayout: ptr VkSubresourceLayout) {.cdecl.}
+  PFN_vkCreateImageView* = proc (device: VkDevice; pCreateInfo: ptr VkImageViewCreateInfo; pAllocator: ptr VkAllocationCallbacks; pView: ptr VkImageView): VkResult {.cdecl.}
+  PFN_vkDestroyImageView* = proc (device: VkDevice; imageView: VkImageView; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateShaderModule* = proc (device: VkDevice; pCreateInfo: ptr VkShaderModuleCreateInfo; pAllocator: ptr VkAllocationCallbacks; pShaderModule: ptr VkShaderModule): VkResult {.cdecl.}
+  PFN_vkDestroyShaderModule* = proc (device: VkDevice; shaderModule: VkShaderModule; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreatePipelineCache* = proc (device: VkDevice; pCreateInfo: ptr VkPipelineCacheCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelineCache: ptr VkPipelineCache): VkResult {.cdecl.}
+  PFN_vkDestroyPipelineCache* = proc (device: VkDevice; pipelineCache: VkPipelineCache; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkGetPipelineCacheData* = proc (device: VkDevice; pipelineCache: VkPipelineCache; pDataSize: ptr csize; pData: pointer): VkResult {.cdecl.}
+  PFN_vkMergePipelineCaches* = proc (device: VkDevice; dstCache: VkPipelineCache; srcCacheCount: uint32; pSrcCaches: ptr VkPipelineCache): VkResult {.cdecl.}
+  PFN_vkCreateGraphicsPipelines* = proc (device: VkDevice; pipelineCache: VkPipelineCache; createInfoCount: uint32; pCreateInfos: ptr VkGraphicsPipelineCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelines: ptr VkPipeline): VkResult {.cdecl.}
+  PFN_vkCreateComputePipelines* = proc (device: VkDevice; pipelineCache: VkPipelineCache; createInfoCount: uint32; pCreateInfos: ptr VkComputePipelineCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelines: ptr VkPipeline): VkResult {.cdecl.}
+  PFN_vkDestroyPipeline* = proc (device: VkDevice; pipeline: VkPipeline; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreatePipelineLayout* = proc (device: VkDevice; pCreateInfo: ptr VkPipelineLayoutCreateInfo; pAllocator: ptr VkAllocationCallbacks; pPipelineLayout: ptr VkPipelineLayout): VkResult {.cdecl.}
+  PFN_vkDestroyPipelineLayout* = proc (device: VkDevice; pipelineLayout: VkPipelineLayout; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateSampler* = proc (device: VkDevice; pCreateInfo: ptr VkSamplerCreateInfo; pAllocator: ptr VkAllocationCallbacks; pSampler: ptr VkSampler): VkResult {.cdecl.}
+  PFN_vkDestroySampler* = proc (device: VkDevice; sampler: VkSampler; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateDescriptorSetLayout* = proc (device: VkDevice; pCreateInfo: ptr VkDescriptorSetLayoutCreateInfo; pAllocator: ptr VkAllocationCallbacks; pSetLayout: ptr VkDescriptorSetLayout): VkResult {.cdecl.}
+  PFN_vkDestroyDescriptorSetLayout* = proc (device: VkDevice; descriptorSetLayout: VkDescriptorSetLayout; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateDescriptorPool* = proc (device: VkDevice; pCreateInfo: ptr VkDescriptorPoolCreateInfo; pAllocator: ptr VkAllocationCallbacks; pDescriptorPool: ptr VkDescriptorPool): VkResult {.cdecl.}
+  PFN_vkDestroyDescriptorPool* = proc (device: VkDevice; descriptorPool: VkDescriptorPool; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkResetDescriptorPool* = proc (device: VkDevice; descriptorPool: VkDescriptorPool; flags: VkDescriptorPoolResetFlags): VkResult {.cdecl.}
+  PFN_vkAllocateDescriptorSets* = proc (device: VkDevice; pAllocateInfo: ptr VkDescriptorSetAllocateInfo; pDescriptorSets: ptr VkDescriptorSet): VkResult {.cdecl.}
+  PFN_vkFreeDescriptorSets* = proc (device: VkDevice; descriptorPool: VkDescriptorPool; descriptorSetCount: uint32; pDescriptorSets: ptr VkDescriptorSet): VkResult {.cdecl.}
+  PFN_vkUpdateDescriptorSets* = proc (device: VkDevice; descriptorWriteCount: uint32; pDescriptorWrites: ptr VkWriteDescriptorSet; descriptorCopyCount: uint32; pDescriptorCopies: ptr VkCopyDescriptorSet) {.cdecl.}
+  PFN_vkCreateFramebuffer* = proc (device: VkDevice; pCreateInfo: ptr VkFramebufferCreateInfo; pAllocator: ptr VkAllocationCallbacks; pFramebuffer: ptr VkFramebuffer): VkResult {.cdecl.}
+  PFN_vkDestroyFramebuffer* = proc (device: VkDevice; framebuffer: VkFramebuffer; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateRenderPass* = proc (device: VkDevice; pCreateInfo: ptr VkRenderPassCreateInfo; pAllocator: ptr VkAllocationCallbacks; pRenderPass: ptr VkRenderPass): VkResult {.cdecl.}
+  PFN_vkDestroyRenderPass* = proc (device: VkDevice; renderPass: VkRenderPass; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkGetRenderAreaGranularity* = proc (device: VkDevice; renderPass: VkRenderPass; pGranularity: ptr VkExtent2D) {.cdecl.}
+  PFN_vkCreateCommandPool* = proc (device: VkDevice; pCreateInfo: ptr VkCommandPoolCreateInfo; pAllocator: ptr VkAllocationCallbacks; pCommandPool: ptr VkCommandPool): VkResult {.cdecl.}
+  PFN_vkDestroyCommandPool* = proc (device: VkDevice; commandPool: VkCommandPool; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkResetCommandPool* = proc (device: VkDevice; commandPool: VkCommandPool; flags: VkCommandPoolResetFlags): VkResult {.cdecl.}
+  PFN_vkAllocateCommandBuffers* = proc (device: VkDevice; pAllocateInfo: ptr VkCommandBufferAllocateInfo; pCommandBuffers: ptr VkCommandBuffer): VkResult {.cdecl.}
+  PFN_vkFreeCommandBuffers* = proc (device: VkDevice; commandPool: VkCommandPool; commandBufferCount: uint32; pCommandBuffers: ptr VkCommandBuffer) {.cdecl.}
+  PFN_vkBeginCommandBuffer* = proc (commandBuffer: VkCommandBuffer; pBeginInfo: ptr VkCommandBufferBeginInfo): VkResult {.cdecl.}
+  PFN_vkEndCommandBuffer* = proc (commandBuffer: VkCommandBuffer): VkResult {.cdecl.}
+  PFN_vkResetCommandBuffer* = proc (commandBuffer: VkCommandBuffer; flags: VkCommandBufferResetFlags): VkResult {.cdecl.}
+  PFN_vkCmdBindPipeline* = proc (commandBuffer: VkCommandBuffer; pipelineBindPoint: VkPipelineBindPoint; pipeline: VkPipeline) {.cdecl.}
+  PFN_vkCmdSetViewport* = proc (commandBuffer: VkCommandBuffer; firstViewport: uint32; viewportCount: uint32; pViewports: ptr VkViewport) {.cdecl.}
+  PFN_vkCmdSetScissor* = proc (commandBuffer: VkCommandBuffer; firstScissor: uint32; scissorCount: uint32; pScissors: ptr VkRect2D) {.cdecl.}
+  PFN_vkCmdSetLineWidth* = proc (commandBuffer: VkCommandBuffer; lineWidth: cfloat) {.cdecl.}
+  PFN_vkCmdSetDepthBias* = proc (commandBuffer: VkCommandBuffer; depthBiasConstantFactor: cfloat; depthBiasClamp: cfloat; depthBiasSlopeFactor: cfloat) {.cdecl.}
+  PFN_vkCmdSetBlendConstants* = proc (commandBuffer: VkCommandBuffer; blendConstants: array[4, cfloat]) {.cdecl.}
+  PFN_vkCmdSetDepthBounds* = proc (commandBuffer: VkCommandBuffer; minDepthBounds: cfloat; maxDepthBounds: cfloat) {.cdecl.}
+  PFN_vkCmdSetStencilCompareMask* = proc (commandBuffer: VkCommandBuffer; faceMask: VkStencilFaceFlags; compareMask: uint32) {.cdecl.}
+  PFN_vkCmdSetStencilWriteMask* = proc (commandBuffer: VkCommandBuffer; faceMask: VkStencilFaceFlags; writeMask: uint32) {.cdecl.}
+  PFN_vkCmdSetStencilReference* = proc (commandBuffer: VkCommandBuffer; faceMask: VkStencilFaceFlags; reference: uint32) {.cdecl.}
+  PFN_vkCmdBindDescriptorSets* = proc (commandBuffer: VkCommandBuffer; pipelineBindPoint: VkPipelineBindPoint; layout: VkPipelineLayout; firstSet: uint32; descriptorSetCount: uint32; pDescriptorSets: ptr VkDescriptorSet; dynamicOffsetCount: uint32; pDynamicOffsets: ptr uint32) {.cdecl.}
+  PFN_vkCmdBindIndexBuffer* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; indexType: VkIndexType) {.cdecl.}
+  PFN_vkCmdBindVertexBuffers* = proc (commandBuffer: VkCommandBuffer; firstBinding: uint32; bindingCount: uint32; pBuffers: ptr VkBuffer; pOffsets: ptr VkDeviceSize) {.cdecl.}
+  PFN_vkCmdDraw* = proc (commandBuffer: VkCommandBuffer; vertexCount: uint32; instanceCount: uint32; firstVertex: uint32; firstInstance: uint32) {.cdecl.}
+  PFN_vkCmdDrawIndexed* = proc (commandBuffer: VkCommandBuffer; indexCount: uint32; instanceCount: uint32; firstIndex: uint32; vertexOffset:  int32; firstInstance: uint32) {.cdecl.}
+  PFN_vkCmdDrawIndirect* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; drawCount: uint32; stride: uint32) {.cdecl.}
+  PFN_vkCmdDrawIndexedIndirect* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; drawCount: uint32; stride: uint32) {.cdecl.}
+  PFN_vkCmdDispatch* = proc (commandBuffer: VkCommandBuffer; groupCountX: uint32; groupCountY: uint32; groupCountZ: uint32) {.cdecl.}
+  PFN_vkCmdDispatchIndirect* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize) {.cdecl.}
+  PFN_vkCmdCopyBuffer* = proc (commandBuffer: VkCommandBuffer; srcBuffer: VkBuffer; dstBuffer: VkBuffer; regionCount: uint32; pRegions: ptr VkBufferCopy) {.cdecl.}
+  PFN_vkCmdCopyImage* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkImageCopy) {.cdecl.}
+  PFN_vkCmdBlitImage* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkImageBlit; filter: VkFilter) {.cdecl.}
+  PFN_vkCmdCopyBufferToImage* = proc (commandBuffer: VkCommandBuffer; srcBuffer: VkBuffer; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkBufferImageCopy) {.cdecl.}
+  PFN_vkCmdCopyImageToBuffer* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstBuffer: VkBuffer; regionCount: uint32; pRegions: ptr VkBufferImageCopy) {.cdecl.}
+  PFN_vkCmdUpdateBuffer* = proc (commandBuffer: VkCommandBuffer; dstBuffer: VkBuffer; dstOffset: VkDeviceSize; dataSize: VkDeviceSize; pData: pointer) {.cdecl.}
+  PFN_vkCmdFillBuffer* = proc (commandBuffer: VkCommandBuffer; dstBuffer: VkBuffer; dstOffset: VkDeviceSize; size: VkDeviceSize; data: uint32) {.cdecl.}
+  PFN_vkCmdClearColorImage* = proc (commandBuffer: VkCommandBuffer; image: VkImage; imageLayout: VkImageLayout; pColor: ptr VkClearColorValue; rangeCount: uint32; pRanges: ptr VkImageSubresourceRange) {.cdecl.}
+  PFN_vkCmdClearDepthStencilImage* = proc (commandBuffer: VkCommandBuffer; image: VkImage; imageLayout: VkImageLayout; pDepthStencil: ptr VkClearDepthStencilValue; rangeCount: uint32; pRanges: ptr VkImageSubresourceRange) {.cdecl.}
+  PFN_vkCmdClearAttachments* = proc (commandBuffer: VkCommandBuffer; attachmentCount: uint32; pAttachments: ptr VkClearAttachment; rectCount: uint32; pRects: ptr VkClearRect) {.cdecl.}
+  PFN_vkCmdResolveImage* = proc (commandBuffer: VkCommandBuffer; srcImage: VkImage; srcImageLayout: VkImageLayout; dstImage: VkImage; dstImageLayout: VkImageLayout; regionCount: uint32; pRegions: ptr VkImageResolve) {.cdecl.}
+  PFN_vkCmdSetEvent* = proc (commandBuffer: VkCommandBuffer; event: VkEvent; stageMask: VkPipelineStageFlags) {.cdecl.}
+  PFN_vkCmdResetEvent* = proc (commandBuffer: VkCommandBuffer; event: VkEvent; stageMask: VkPipelineStageFlags) {.cdecl.}
+  PFN_vkCmdWaitEvents* = proc (commandBuffer: VkCommandBuffer; eventCount: uint32; pEvents: ptr VkEvent; srcStageMask: VkPipelineStageFlags; dstStageMask: VkPipelineStageFlags; memoryBarrierCount: uint32; pMemoryBarriers: ptr VkMemoryBarrier; bufferMemoryBarrierCount: uint32; pBufferMemoryBarriers: ptr VkBufferMemoryBarrier; imageMemoryBarrierCount: uint32; pImageMemoryBarriers: ptr VkImageMemoryBarrier) {.cdecl.}
+  PFN_vkCmdPipelineBarrier* = proc (commandBuffer: VkCommandBuffer; srcStageMask: VkPipelineStageFlags; dstStageMask: VkPipelineStageFlags; dependencyFlags: VkDependencyFlags; memoryBarrierCount: uint32; pMemoryBarriers: ptr VkMemoryBarrier; bufferMemoryBarrierCount: uint32; pBufferMemoryBarriers: ptr VkBufferMemoryBarrier; imageMemoryBarrierCount: uint32; pImageMemoryBarriers: ptr VkImageMemoryBarrier) {.cdecl.}
+  PFN_vkCmdBeginQuery* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; query: uint32; flags: VkQueryControlFlags) {.cdecl.}
+  PFN_vkCmdEndQuery* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; query: uint32) {.cdecl.}
+  PFN_vkCmdResetQueryPool* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; firstQuery: uint32; queryCount: uint32) {.cdecl.}
+  PFN_vkCmdWriteTimestamp* = proc (commandBuffer: VkCommandBuffer; pipelineStage: VkPipelineStageFlagBits; queryPool: VkQueryPool; query: uint32) {.cdecl.}
+  PFN_vkCmdCopyQueryPoolResults* = proc (commandBuffer: VkCommandBuffer; queryPool: VkQueryPool; firstQuery: uint32; queryCount: uint32; dstBuffer: VkBuffer; dstOffset: VkDeviceSize; stride: VkDeviceSize; flags: VkQueryResultFlags) {.cdecl.}
+  PFN_vkCmdPushConstants* = proc (commandBuffer: VkCommandBuffer; layout: VkPipelineLayout; stageFlags: VkShaderStageFlags; offset: uint32; size: uint32; pValues: pointer) {.cdecl.}
+  PFN_vkCmdBeginRenderPass* = proc (commandBuffer: VkCommandBuffer; pRenderPassBegin: ptr VkRenderPassBeginInfo; contents: VkSubpassContents) {.cdecl.}
+  PFN_vkCmdNextSubpass* = proc (commandBuffer: VkCommandBuffer; contents: VkSubpassContents) {.cdecl.}
+  PFN_vkCmdEndRenderPass* = proc (commandBuffer: VkCommandBuffer) {.cdecl.}
+  PFN_vkCmdExecuteCommands* = proc (commandBuffer: VkCommandBuffer; commandBufferCount: uint32; pCommandBuffers: ptr VkCommandBuffer) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateInstance*(pCreateInfo: ptr VkInstanceCreateInfo; pAllocator: ptr VkAllocationCallbacks; pInstance: ptr VkInstance): VkResult {.cdecl, importc.}
@@ -2561,11 +2561,11 @@ type
     format*: VkFormat
     colorSpace*: VkColorSpaceKHR
 
-  PFN_vkDestroySurfaceKHR* = proc (instance: VkInstance; surface: VkSurfaceKHR; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkGetPhysicalDeviceSurfaceSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; surface: VkSurfaceKHR; pSupported: ptr VkBool32): VkResult
-  PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pSurfaceCapabilities: ptr VkSurfaceCapabilitiesKHR): VkResult
-  PFN_vkGetPhysicalDeviceSurfaceFormatsKHR* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pSurfaceFormatCount: ptr uint32; pSurfaceFormats: ptr VkSurfaceFormatKHR): VkResult
-  PFN_vkGetPhysicalDeviceSurfacePresentModesKHR* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pPresentModeCount: ptr uint32; pPresentModes: ptr VkPresentModeKHR): VkResult
+  PFN_vkDestroySurfaceKHR* = proc (instance: VkInstance; surface: VkSurfaceKHR; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkGetPhysicalDeviceSurfaceSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; surface: VkSurfaceKHR; pSupported: ptr VkBool32): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pSurfaceCapabilities: ptr VkSurfaceCapabilitiesKHR): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceSurfaceFormatsKHR* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pSurfaceFormatCount: ptr uint32; pSurfaceFormats: ptr VkSurfaceFormatKHR): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceSurfacePresentModesKHR* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pPresentModeCount: ptr uint32; pPresentModes: ptr VkPresentModeKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkDestroySurfaceKHR*(instance: VkInstance; surface: VkSurfaceKHR; pAllocator: ptr VkAllocationCallbacks) {.cdecl, importc.}
@@ -2620,11 +2620,11 @@ type
     pImageIndices*: ptr uint32
     pResults*: ptr VkResult
 
-  PFN_vkCreateSwapchainKHR* = proc (device: VkDevice; pCreateInfo: ptr VkSwapchainCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSwapchain: ptr VkSwapchainKHR): VkResult
-  PFN_vkDestroySwapchainKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkGetSwapchainImagesKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pSwapchainImageCount: ptr uint32; pSwapchainImages: ptr VkImage): VkResult
-  PFN_vkAcquireNextImageKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR; timeout: uint64; semaphore: VkSemaphore; fence: VkFence; pImageIndex: ptr uint32): VkResult
-  PFN_vkQueuePresentKHR* = proc (queue: VkQueue; pPresentInfo: ptr VkPresentInfoKHR): VkResult
+  PFN_vkCreateSwapchainKHR* = proc (device: VkDevice; pCreateInfo: ptr VkSwapchainCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSwapchain: ptr VkSwapchainKHR): VkResult {.cdecl.}
+  PFN_vkDestroySwapchainKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkGetSwapchainImagesKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pSwapchainImageCount: ptr uint32; pSwapchainImages: ptr VkImage): VkResult {.cdecl.}
+  PFN_vkAcquireNextImageKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR; timeout: uint64; semaphore: VkSemaphore; fence: VkFence; pImageIndex: ptr uint32): VkResult {.cdecl.}
+  PFN_vkQueuePresentKHR* = proc (queue: VkQueue; pPresentInfo: ptr VkPresentInfoKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateSwapchainKHR*(device: VkDevice; pCreateInfo: ptr VkSwapchainCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSwapchain: ptr VkSwapchainKHR): VkResult {.cdecl, importc.}
@@ -2707,13 +2707,13 @@ type
     alphaMode*: VkDisplayPlaneAlphaFlagBitsKHR
     imageExtent*: VkExtent2D
 
-  PFN_vkGetPhysicalDeviceDisplayPropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pPropertyCount: ptr uint32; pProperties: ptr VkDisplayPropertiesKHR): VkResult
-  PFN_vkGetPhysicalDeviceDisplayPlanePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pPropertyCount: ptr uint32; pProperties: ptr VkDisplayPlanePropertiesKHR): VkResult
-  PFN_vkGetDisplayPlaneSupportedDisplaysKHR* = proc (physicalDevice: VkPhysicalDevice; planeIndex: uint32; pDisplayCount: ptr uint32; pDisplays: ptr VkDisplayKHR): VkResult
-  PFN_vkGetDisplayModePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; display: VkDisplayKHR; pPropertyCount: ptr uint32; pProperties: ptr VkDisplayModePropertiesKHR): VkResult
-  PFN_vkCreateDisplayModeKHR* = proc (physicalDevice: VkPhysicalDevice; display: VkDisplayKHR; pCreateInfo: ptr VkDisplayModeCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pMode: ptr VkDisplayModeKHR): VkResult
-  PFN_vkGetDisplayPlaneCapabilitiesKHR* = proc (physicalDevice: VkPhysicalDevice; mode: VkDisplayModeKHR; planeIndex: uint32; pCapabilities: ptr VkDisplayPlaneCapabilitiesKHR): VkResult
-  PFN_vkCreateDisplayPlaneSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkDisplaySurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
+  PFN_vkGetPhysicalDeviceDisplayPropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pPropertyCount: ptr uint32; pProperties: ptr VkDisplayPropertiesKHR): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceDisplayPlanePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pPropertyCount: ptr uint32; pProperties: ptr VkDisplayPlanePropertiesKHR): VkResult {.cdecl.}
+  PFN_vkGetDisplayPlaneSupportedDisplaysKHR* = proc (physicalDevice: VkPhysicalDevice; planeIndex: uint32; pDisplayCount: ptr uint32; pDisplays: ptr VkDisplayKHR): VkResult {.cdecl.}
+  PFN_vkGetDisplayModePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; display: VkDisplayKHR; pPropertyCount: ptr uint32; pProperties: ptr VkDisplayModePropertiesKHR): VkResult {.cdecl.}
+  PFN_vkCreateDisplayModeKHR* = proc (physicalDevice: VkPhysicalDevice; display: VkDisplayKHR; pCreateInfo: ptr VkDisplayModeCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pMode: ptr VkDisplayModeKHR): VkResult {.cdecl.}
+  PFN_vkGetDisplayPlaneCapabilitiesKHR* = proc (physicalDevice: VkPhysicalDevice; mode: VkDisplayModeKHR; planeIndex: uint32; pCapabilities: ptr VkDisplayPlaneCapabilitiesKHR): VkResult {.cdecl.}
+  PFN_vkCreateDisplayPlaneSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkDisplaySurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceDisplayPropertiesKHR*(physicalDevice: VkPhysicalDevice; pPropertyCount: ptr uint32; pProperties: ptr VkDisplayPropertiesKHR): VkResult {.cdecl, importc.}
@@ -2737,7 +2737,7 @@ type
     dstRect*: VkRect2D
     persistent*: VkBool32
 
-  PFN_vkCreateSharedSwapchainsKHR* = proc (device: VkDevice; swapchainCount: uint32; pCreateInfos: ptr VkSwapchainCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSwapchains: ptr VkSwapchainKHR): VkResult
+  PFN_vkCreateSharedSwapchainsKHR* = proc (device: VkDevice; swapchainCount: uint32; pCreateInfos: ptr VkSwapchainCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSwapchains: ptr VkSwapchainKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateSharedSwapchainsKHR*(device: VkDevice; swapchainCount: uint32; pCreateInfos: ptr VkSwapchainCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSwapchains: ptr VkSwapchainKHR): VkResult {.cdecl, importc.}
@@ -2760,8 +2760,8 @@ when defined(VK_USE_PLATFORM_XLIB_KHR):
       dpy*: ptr Display
       window*: Window
 
-    PFN_vkCreateXlibSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkXlibSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
-    PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; dpy: ptr Display; visualID: VisualID): VkBool32
+    PFN_vkCreateXlibSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkXlibSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
+    PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; dpy: ptr Display; visualID: VisualID): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateXlibSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkXlibSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -2785,8 +2785,8 @@ when defined(VK_USE_PLATFORM_XCB_KHR):
       connection*: ptr xcb_connection_t
       window*: xcb_window_t
 
-    PFN_vkCreateXcbSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkXcbSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
-    PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr xcb_connection_t; visual_id: xcb_visualid_t): VkBool32
+    PFN_vkCreateXcbSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkXcbSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
+    PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr xcb_connection_t; visual_id: xcb_visualid_t): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateXcbSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkXcbSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -2809,8 +2809,8 @@ when defined(VK_USE_PLATFORM_WAYLAND_KHR):
       display*: ptr wl_display
       surface*: ptr wl_surface
 
-    PFN_vkCreateWaylandSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkWaylandSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
-    PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; display: ptr wl_display): VkBool32
+    PFN_vkCreateWaylandSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkWaylandSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
+    PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; display: ptr wl_display): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateWaylandSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkWaylandSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -2833,8 +2833,8 @@ when defined(VK_USE_PLATFORM_MIR_KHR):
       connection*: ptr MirConnection
       mirSurface*: ptr MirSurface
 
-    PFN_vkCreateMirSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkMirSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
-    PFN_vkGetPhysicalDeviceMirPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr MirConnection): VkBool32
+    PFN_vkCreateMirSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkMirSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
+    PFN_vkGetPhysicalDeviceMirPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr MirConnection): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateMirSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkMirSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -2857,7 +2857,7 @@ when defined(VK_USE_PLATFORM_ANDROID_KHR):
       flags*: VkAndroidSurfaceCreateFlagsKHR
       window*: ptr ANativeWindow
 
-    PFN_vkCreateAndroidSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkAndroidSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
+    PFN_vkCreateAndroidSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkAndroidSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateAndroidSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkAndroidSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -2879,8 +2879,8 @@ when defined(VK_USE_PLATFORM_WIN32_KHR):
       hinstance*: HINSTANCE
       hwnd*: HWND
 
-    PFN_vkCreateWin32SurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkWin32SurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
-    PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32): VkBool32
+    PFN_vkCreateWin32SurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkWin32SurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
+    PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32): VkBool32 {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateWin32SurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkWin32SurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -2948,13 +2948,13 @@ type
     usage*: VkImageUsageFlags
     tiling*: VkImageTiling
 
-  PFN_vkGetPhysicalDeviceFeatures2KHR* = proc (physicalDevice: VkPhysicalDevice; pFeatures: ptr VkPhysicalDeviceFeatures2KHR)
-  PFN_vkGetPhysicalDeviceProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pProperties: ptr VkPhysicalDeviceProperties2KHR)
-  PFN_vkGetPhysicalDeviceFormatProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; pFormatProperties: ptr VkFormatProperties2KHR)
-  PFN_vkGetPhysicalDeviceImageFormatProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pImageFormatInfo: ptr VkPhysicalDeviceImageFormatInfo2KHR; pImageFormatProperties: ptr VkImageFormatProperties2KHR): VkResult
-  PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pQueueFamilyPropertyCount: ptr uint32; pQueueFamilyProperties: ptr VkQueueFamilyProperties2KHR)
-  PFN_vkGetPhysicalDeviceMemoryProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pMemoryProperties: ptr VkPhysicalDeviceMemoryProperties2KHR)
-  PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pFormatInfo: ptr VkPhysicalDeviceSparseImageFormatInfo2KHR; pPropertyCount: ptr uint32; pProperties: ptr VkSparseImageFormatProperties2KHR)
+  PFN_vkGetPhysicalDeviceFeatures2KHR* = proc (physicalDevice: VkPhysicalDevice; pFeatures: ptr VkPhysicalDeviceFeatures2KHR) {.cdecl.}
+  PFN_vkGetPhysicalDeviceProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pProperties: ptr VkPhysicalDeviceProperties2KHR) {.cdecl.}
+  PFN_vkGetPhysicalDeviceFormatProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; pFormatProperties: ptr VkFormatProperties2KHR) {.cdecl.}
+  PFN_vkGetPhysicalDeviceImageFormatProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pImageFormatInfo: ptr VkPhysicalDeviceImageFormatInfo2KHR; pImageFormatProperties: ptr VkImageFormatProperties2KHR): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pQueueFamilyPropertyCount: ptr uint32; pQueueFamilyProperties: ptr VkQueueFamilyProperties2KHR) {.cdecl.}
+  PFN_vkGetPhysicalDeviceMemoryProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pMemoryProperties: ptr VkPhysicalDeviceMemoryProperties2KHR) {.cdecl.}
+  PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR* = proc (physicalDevice: VkPhysicalDevice; pFormatInfo: ptr VkPhysicalDeviceSparseImageFormatInfo2KHR; pPropertyCount: ptr uint32; pProperties: ptr VkSparseImageFormatProperties2KHR) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceFeatures2KHR*(physicalDevice: VkPhysicalDevice; pFeatures: ptr VkPhysicalDeviceFeatures2KHR) {.cdecl, importc.}
@@ -2975,7 +2975,7 @@ const
 
 type
   VkCommandPoolTrimFlagsKHR* = VkFlags
-  PFN_vkTrimCommandPoolKHR* = proc (device: VkDevice; commandPool: VkCommandPool; flags: VkCommandPoolTrimFlagsKHR)
+  PFN_vkTrimCommandPoolKHR* = proc (device: VkDevice; commandPool: VkCommandPool; flags: VkCommandPoolTrimFlagsKHR) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkTrimCommandPoolKHR*(device: VkDevice; commandPool: VkCommandPool; flags: VkCommandPoolTrimFlagsKHR) {.cdecl, importc.}
@@ -3044,7 +3044,7 @@ type
   PFN_vkGetPhysicalDeviceExternalBufferPropertiesKHR* = proc (
       physicalDevice: VkPhysicalDevice;
       pExternalBufferInfo: ptr VkPhysicalDeviceExternalBufferInfoKHR;
-      pExternalBufferProperties: ptr VkExternalBufferPropertiesKHR)
+      pExternalBufferProperties: ptr VkExternalBufferPropertiesKHR) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceExternalBufferPropertiesKHR*(physicalDevice: VkPhysicalDevice; pExternalBufferInfo: ptr VkPhysicalDeviceExternalBufferInfoKHR; pExternalBufferProperties: ptr VkExternalBufferPropertiesKHR) {.cdecl, importc.}
@@ -3104,8 +3104,8 @@ when defined(VK_USE_PLATFORM_WIN32_KHR):
       memory*: VkDeviceMemory
       handleType*: VkExternalMemoryHandleTypeFlagBitsKHR
 
-    PFN_vkGetMemoryWin32HandleKHR* = proc (device: VkDevice; pGetWin32HandleInfo: ptr VkMemoryGetWin32HandleInfoKHR; pHandle: ptr HANDLE): VkResult
-    PFN_vkGetMemoryWin32HandlePropertiesKHR* = proc (device: VkDevice; handleType: VkExternalMemoryHandleTypeFlagBitsKHR; handle: HANDLE; pMemoryWin32HandleProperties: ptr VkMemoryWin32HandlePropertiesKHR): VkResult
+    PFN_vkGetMemoryWin32HandleKHR* = proc (device: VkDevice; pGetWin32HandleInfo: ptr VkMemoryGetWin32HandleInfoKHR; pHandle: ptr HANDLE): VkResult {.cdecl.}
+    PFN_vkGetMemoryWin32HandlePropertiesKHR* = proc (device: VkDevice; handleType: VkExternalMemoryHandleTypeFlagBitsKHR; handle: HANDLE; pMemoryWin32HandleProperties: ptr VkMemoryWin32HandlePropertiesKHR): VkResult {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
     proc vkGetMemoryWin32HandleKHR*(device: VkDevice; pGetWin32HandleInfo: ptr VkMemoryGetWin32HandleInfoKHR; pHandle: ptr HANDLE): VkResult {.cdecl, importc.}
@@ -3134,8 +3134,8 @@ type
     memory*: VkDeviceMemory
     handleType*: VkExternalMemoryHandleTypeFlagBitsKHR
 
-  PFN_vkGetMemoryFdKHR* = proc (device: VkDevice; pGetFdInfo: ptr VkMemoryGetFdInfoKHR; pFd: ptr cint): VkResult
-  PFN_vkGetMemoryFdPropertiesKHR* = proc (device: VkDevice; handleType: VkExternalMemoryHandleTypeFlagBitsKHR; fd: cint; pMemoryFdProperties: ptr VkMemoryFdPropertiesKHR): VkResult
+  PFN_vkGetMemoryFdKHR* = proc (device: VkDevice; pGetFdInfo: ptr VkMemoryGetFdInfoKHR; pFd: ptr cint): VkResult {.cdecl.}
+  PFN_vkGetMemoryFdPropertiesKHR* = proc (device: VkDevice; handleType: VkExternalMemoryHandleTypeFlagBitsKHR; fd: cint; pMemoryFdProperties: ptr VkMemoryFdPropertiesKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetMemoryFdKHR*(device: VkDevice; pGetFdInfo: ptr VkMemoryGetFdInfoKHR; pFd: ptr cint): VkResult {.cdecl, importc.}
@@ -3191,7 +3191,7 @@ type
     compatibleHandleTypes*: VkExternalSemaphoreHandleTypeFlagsKHR
     externalSemaphoreFeatures*: VkExternalSemaphoreFeatureFlagsKHR
 
-  PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pExternalSemaphoreInfo: ptr VkPhysicalDeviceExternalSemaphoreInfoKHR; pExternalSemaphoreProperties: ptr VkExternalSemaphorePropertiesKHR)
+  PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pExternalSemaphoreInfo: ptr VkPhysicalDeviceExternalSemaphoreInfoKHR; pExternalSemaphoreProperties: ptr VkExternalSemaphorePropertiesKHR) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceExternalSemaphorePropertiesKHR*(physicalDevice: VkPhysicalDevice; pExternalSemaphoreInfo: ptr VkPhysicalDeviceExternalSemaphoreInfoKHR; pExternalSemaphoreProperties: ptr VkExternalSemaphorePropertiesKHR) {.cdecl, importc.}
@@ -3250,8 +3250,8 @@ when defined(VK_USE_PLATFORM_WIN32_KHR):
       semaphore*: VkSemaphore
       handleType*: VkExternalSemaphoreHandleTypeFlagBitsKHR
 
-    PFN_vkImportSemaphoreWin32HandleKHR* = proc (device: VkDevice; pImportSemaphoreWin32HandleInfo: ptr VkImportSemaphoreWin32HandleInfoKHR): VkResult
-    PFN_vkGetSemaphoreWin32HandleKHR* = proc (device: VkDevice; pGetWin32HandleInfo: ptr VkSemaphoreGetWin32HandleInfoKHR; pHandle: ptr HANDLE): VkResult
+    PFN_vkImportSemaphoreWin32HandleKHR* = proc (device: VkDevice; pImportSemaphoreWin32HandleInfo: ptr VkImportSemaphoreWin32HandleInfoKHR): VkResult {.cdecl.}
+    PFN_vkGetSemaphoreWin32HandleKHR* = proc (device: VkDevice; pGetWin32HandleInfo: ptr VkSemaphoreGetWin32HandleInfoKHR; pHandle: ptr HANDLE): VkResult {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
     proc vkImportSemaphoreWin32HandleKHR*(device: VkDevice; pImportSemaphoreWin32HandleInfo: ptr VkImportSemaphoreWin32HandleInfoKHR): VkResult {.cdecl, importc.}
@@ -3277,8 +3277,8 @@ type
     semaphore*: VkSemaphore
     handleType*: VkExternalSemaphoreHandleTypeFlagBitsKHR
 
-  PFN_vkImportSemaphoreFdKHR* = proc (device: VkDevice; pImportSemaphoreFdInfo: ptr VkImportSemaphoreFdInfoKHR): VkResult
-  PFN_vkGetSemaphoreFdKHR* = proc (device: VkDevice; pGetFdInfo: ptr VkSemaphoreGetFdInfoKHR; pFd: ptr cint): VkResult
+  PFN_vkImportSemaphoreFdKHR* = proc (device: VkDevice; pImportSemaphoreFdInfo: ptr VkImportSemaphoreFdInfoKHR): VkResult {.cdecl.}
+  PFN_vkGetSemaphoreFdKHR* = proc (device: VkDevice; pGetFdInfo: ptr VkSemaphoreGetFdInfoKHR; pFd: ptr cint): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkImportSemaphoreFdKHR*(device: VkDevice; pImportSemaphoreFdInfo: ptr VkImportSemaphoreFdInfoKHR): VkResult {.cdecl, importc.}
@@ -3295,7 +3295,7 @@ type
     pNext*: pointer
     maxPushDescriptors*: uint32
 
-  PFN_vkCmdPushDescriptorSetKHR* = proc (commandBuffer: VkCommandBuffer; pipelineBindPoint: VkPipelineBindPoint; layout: VkPipelineLayout; set: uint32; descriptorWriteCount: uint32; pDescriptorWrites: ptr VkWriteDescriptorSet)
+  PFN_vkCmdPushDescriptorSetKHR* = proc (commandBuffer: VkCommandBuffer; pipelineBindPoint: VkPipelineBindPoint; layout: VkPipelineLayout; set: uint32; descriptorWriteCount: uint32; pDescriptorWrites: ptr VkWriteDescriptorSet) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCmdPushDescriptorSetKHR*(commandBuffer: VkCommandBuffer; pipelineBindPoint: VkPipelineBindPoint; layout: VkPipelineLayout; set: uint32; descriptorWriteCount: uint32; pDescriptorWrites: ptr VkWriteDescriptorSet) {.cdecl, importc.}
@@ -3374,10 +3374,10 @@ type
     pipelineLayout*: VkPipelineLayout
     set*: uint32
 
-  PFN_vkCreateDescriptorUpdateTemplateKHR* = proc (device: VkDevice; pCreateInfo: ptr VkDescriptorUpdateTemplateCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pDescriptorUpdateTemplate: ptr VkDescriptorUpdateTemplateKHR): VkResult
-  PFN_vkDestroyDescriptorUpdateTemplateKHR* = proc (device: VkDevice; descriptorUpdateTemplate: VkDescriptorUpdateTemplateKHR; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkUpdateDescriptorSetWithTemplateKHR* = proc (device: VkDevice; descriptorSet: VkDescriptorSet; descriptorUpdateTemplate: VkDescriptorUpdateTemplateKHR; pData: pointer)
-  PFN_vkCmdPushDescriptorSetWithTemplateKHR* = proc (commandBuffer: VkCommandBuffer; descriptorUpdateTemplate: VkDescriptorUpdateTemplateKHR; layout: VkPipelineLayout; set: uint32; pData: pointer)
+  PFN_vkCreateDescriptorUpdateTemplateKHR* = proc (device: VkDevice; pCreateInfo: ptr VkDescriptorUpdateTemplateCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pDescriptorUpdateTemplate: ptr VkDescriptorUpdateTemplateKHR): VkResult {.cdecl.}
+  PFN_vkDestroyDescriptorUpdateTemplateKHR* = proc (device: VkDevice; descriptorUpdateTemplate: VkDescriptorUpdateTemplateKHR; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkUpdateDescriptorSetWithTemplateKHR* = proc (device: VkDevice; descriptorSet: VkDescriptorSet; descriptorUpdateTemplate: VkDescriptorUpdateTemplateKHR; pData: pointer) {.cdecl.}
+  PFN_vkCmdPushDescriptorSetWithTemplateKHR* = proc (commandBuffer: VkCommandBuffer; descriptorUpdateTemplate: VkDescriptorUpdateTemplateKHR; layout: VkPipelineLayout; set: uint32; pData: pointer) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateDescriptorUpdateTemplateKHR*(device: VkDevice; pCreateInfo: ptr VkDescriptorUpdateTemplateCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pDescriptorUpdateTemplate: ptr VkDescriptorUpdateTemplateKHR): VkResult {.cdecl, importc.}
@@ -3396,7 +3396,7 @@ type
     pNext*: pointer
     sharedPresentSupportedUsageFlags*: VkImageUsageFlags
 
-  PFN_vkGetSwapchainStatusKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR): VkResult
+  PFN_vkGetSwapchainStatusKHR* = proc (device: VkDevice; swapchain: VkSwapchainKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetSwapchainStatusKHR*(device: VkDevice; swapchain: VkSwapchainKHR): VkResult {.cdecl, importc.}
@@ -3433,7 +3433,7 @@ type
     compatibleHandleTypes*: VkExternalFenceHandleTypeFlagsKHR
     externalFenceFeatures*: VkExternalFenceFeatureFlagsKHR
 
-  PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pExternalFenceInfo: ptr VkPhysicalDeviceExternalFenceInfoKHR; pExternalFenceProperties: ptr VkExternalFencePropertiesKHR)
+  PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR* = proc (physicalDevice: VkPhysicalDevice; pExternalFenceInfo: ptr VkPhysicalDeviceExternalFenceInfoKHR; pExternalFenceProperties: ptr VkExternalFencePropertiesKHR) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceExternalFencePropertiesKHR*(physicalDevice: VkPhysicalDevice; pExternalFenceInfo: ptr VkPhysicalDeviceExternalFenceInfoKHR; pExternalFenceProperties: ptr VkExternalFencePropertiesKHR) {.cdecl, importc.}
@@ -3483,8 +3483,8 @@ when defined(VK_USE_PLATFORM_WIN32_KHR):
       fence*: VkFence
       handleType*: VkExternalFenceHandleTypeFlagBitsKHR
 
-    PFN_vkImportFenceWin32HandleKHR* = proc (device: VkDevice; pImportFenceWin32HandleInfo: ptr VkImportFenceWin32HandleInfoKHR): VkResult
-    PFN_vkGetFenceWin32HandleKHR* = proc (device: VkDevice; pGetWin32HandleInfo: ptr VkFenceGetWin32HandleInfoKHR; pHandle: ptr HANDLE): VkResult
+    PFN_vkImportFenceWin32HandleKHR* = proc (device: VkDevice; pImportFenceWin32HandleInfo: ptr VkImportFenceWin32HandleInfoKHR): VkResult {.cdecl.}
+    PFN_vkGetFenceWin32HandleKHR* = proc (device: VkDevice; pGetWin32HandleInfo: ptr VkFenceGetWin32HandleInfoKHR; pHandle: ptr HANDLE): VkResult {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
     proc vkImportFenceWin32HandleKHR*(device: VkDevice; pImportFenceWin32HandleInfo: ptr VkImportFenceWin32HandleInfoKHR): VkResult {.cdecl, importc.}
@@ -3510,8 +3510,8 @@ type
     fence*: VkFence
     handleType*: VkExternalFenceHandleTypeFlagBitsKHR
 
-  PFN_vkImportFenceFdKHR* = proc (device: VkDevice; pImportFenceFdInfo: ptr VkImportFenceFdInfoKHR): VkResult
-  PFN_vkGetFenceFdKHR* = proc (device: VkDevice; pGetFdInfo: ptr VkFenceGetFdInfoKHR; pFd: ptr cint): VkResult
+  PFN_vkImportFenceFdKHR* = proc (device: VkDevice; pImportFenceFdInfo: ptr VkImportFenceFdInfoKHR): VkResult {.cdecl.}
+  PFN_vkGetFenceFdKHR* = proc (device: VkDevice; pGetFdInfo: ptr VkFenceGetFdInfoKHR; pFd: ptr cint): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkImportFenceFdKHR*(device: VkDevice; pImportFenceFdInfo: ptr VkImportFenceFdInfoKHR): VkResult {.cdecl, importc.}
@@ -3581,11 +3581,11 @@ type
   PFN_vkGetPhysicalDeviceSurfaceCapabilities2KHR* = proc (
       physicalDevice: VkPhysicalDevice;
       pSurfaceInfo: ptr VkPhysicalDeviceSurfaceInfo2KHR;
-      pSurfaceCapabilities: ptr VkSurfaceCapabilities2KHR): VkResult
+      pSurfaceCapabilities: ptr VkSurfaceCapabilities2KHR): VkResult {.cdecl.}
   PFN_vkGetPhysicalDeviceSurfaceFormats2KHR* = proc (
       physicalDevice: VkPhysicalDevice;
       pSurfaceInfo: ptr VkPhysicalDeviceSurfaceInfo2KHR;
-      pSurfaceFormatCount: ptr uint32; pSurfaceFormats: ptr VkSurfaceFormat2KHR): VkResult
+      pSurfaceFormatCount: ptr uint32; pSurfaceFormats: ptr VkSurfaceFormat2KHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceSurfaceCapabilities2KHR*(physicalDevice: VkPhysicalDevice; pSurfaceInfo: ptr VkPhysicalDeviceSurfaceInfo2KHR; pSurfaceCapabilities: ptr VkSurfaceCapabilities2KHR): VkResult {.cdecl, importc.}
@@ -3658,9 +3658,9 @@ type
     pNext*: pointer
     memoryRequirements*: VkSparseImageMemoryRequirements
 
-  PFN_vkGetImageMemoryRequirements2KHR* = proc (device: VkDevice; pInfo: ptr VkImageMemoryRequirementsInfo2KHR; pMemoryRequirements: ptr VkMemoryRequirements2KHR)
-  PFN_vkGetBufferMemoryRequirements2KHR* = proc (device: VkDevice; pInfo: ptr VkBufferMemoryRequirementsInfo2KHR; pMemoryRequirements: ptr VkMemoryRequirements2KHR)
-  PFN_vkGetImageSparseMemoryRequirements2KHR* = proc (device: VkDevice; pInfo: ptr VkImageSparseMemoryRequirementsInfo2KHR; pSparseMemoryRequirementCount: ptr uint32; pSparseMemoryRequirements: ptr VkSparseImageMemoryRequirements2KHR)
+  PFN_vkGetImageMemoryRequirements2KHR* = proc (device: VkDevice; pInfo: ptr VkImageMemoryRequirementsInfo2KHR; pMemoryRequirements: ptr VkMemoryRequirements2KHR) {.cdecl.}
+  PFN_vkGetBufferMemoryRequirements2KHR* = proc (device: VkDevice; pInfo: ptr VkBufferMemoryRequirementsInfo2KHR; pMemoryRequirements: ptr VkMemoryRequirements2KHR) {.cdecl.}
+  PFN_vkGetImageSparseMemoryRequirements2KHR* = proc (device: VkDevice; pInfo: ptr VkImageSparseMemoryRequirementsInfo2KHR; pSparseMemoryRequirementCount: ptr uint32; pSparseMemoryRequirements: ptr VkSparseImageMemoryRequirements2KHR) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetImageMemoryRequirements2KHR*(device: VkDevice; pInfo: ptr VkImageMemoryRequirementsInfo2KHR; pMemoryRequirements: ptr VkMemoryRequirements2KHR) {.cdecl, importc.}
@@ -3742,8 +3742,8 @@ type
     pNext*: pointer
     combinedImageSamplerDescriptorCount*: uint32
 
-  PFN_vkCreateSamplerYcbcrConversionKHR* = proc (device: VkDevice; pCreateInfo: ptr VkSamplerYcbcrConversionCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pYcbcrConversion: ptr VkSamplerYcbcrConversionKHR): VkResult
-  PFN_vkDestroySamplerYcbcrConversionKHR* = proc (device: VkDevice; ycbcrConversion: VkSamplerYcbcrConversionKHR; pAllocator: ptr VkAllocationCallbacks)
+  PFN_vkCreateSamplerYcbcrConversionKHR* = proc (device: VkDevice; pCreateInfo: ptr VkSamplerYcbcrConversionCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pYcbcrConversion: ptr VkSamplerYcbcrConversionKHR): VkResult {.cdecl.}
+  PFN_vkDestroySamplerYcbcrConversionKHR* = proc (device: VkDevice; ycbcrConversion: VkSamplerYcbcrConversionKHR; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateSamplerYcbcrConversionKHR*(device: VkDevice; pCreateInfo: ptr VkSamplerYcbcrConversionCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pYcbcrConversion: ptr VkSamplerYcbcrConversionKHR): VkResult {.cdecl, importc.}
@@ -3769,8 +3769,8 @@ type
     memory*: VkDeviceMemory
     memoryOffset*: VkDeviceSize
 
-  PFN_vkBindBufferMemory2KHR* = proc (device: VkDevice; bindInfoCount: uint32; pBindInfos: ptr VkBindBufferMemoryInfoKHR): VkResult
-  PFN_vkBindImageMemory2KHR* = proc (device: VkDevice; bindInfoCount: uint32; pBindInfos: ptr VkBindImageMemoryInfoKHR): VkResult
+  PFN_vkBindBufferMemory2KHR* = proc (device: VkDevice; bindInfoCount: uint32; pBindInfos: ptr VkBindBufferMemoryInfoKHR): VkResult {.cdecl.}
+  PFN_vkBindImageMemory2KHR* = proc (device: VkDevice; bindInfoCount: uint32; pBindInfos: ptr VkBindImageMemoryInfoKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkBindBufferMemory2KHR*(device: VkDevice; bindInfoCount: uint32; pBindInfos: ptr VkBindBufferMemoryInfoKHR): VkResult {.cdecl, importc.}
@@ -3834,7 +3834,7 @@ type
 
   VkDebugReportFlagsEXT* = VkFlags
 
-  PFN_vkDebugReportCallbackEXT* = proc (flags: VkDebugReportFlagsEXT; objectType: VkDebugReportObjectTypeEXT; cbObject: uint64; location: csize; messageCode:  int32; pLayerPrefix: cstring; pMessage: cstring; pUserData: pointer): VkBool32
+  PFN_vkDebugReportCallbackEXT* = proc (flags: VkDebugReportFlagsEXT; objectType: VkDebugReportObjectTypeEXT; cbObject: uint64; location: csize; messageCode:  int32; pLayerPrefix: cstring; pMessage: cstring; pUserData: pointer): VkBool32 {.cdecl.}
 
   VkDebugReportCallbackCreateInfoEXT* = object
     sType*: VkStructureType
@@ -3843,9 +3843,9 @@ type
     pfnCallback*: PFN_vkDebugReportCallbackEXT
     pUserData*: pointer
 
-  PFN_vkCreateDebugReportCallbackEXT* = proc (instance: VkInstance; pCreateInfo: ptr VkDebugReportCallbackCreateInfoEXT; pAllocator: ptr VkAllocationCallbacks; pCallback: ptr VkDebugReportCallbackEXT): VkResult
-  PFN_vkDestroyDebugReportCallbackEXT* = proc (instance: VkInstance; callback: VkDebugReportCallbackEXT; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkDebugReportMessageEXT* = proc (instance: VkInstance; flags: VkDebugReportFlagsEXT; objectType: VkDebugReportObjectTypeEXT; cbObject: uint64; location: csize; messageCode:  int32; pLayerPrefix: cstring; pMessage: cstring)
+  PFN_vkCreateDebugReportCallbackEXT* = proc (instance: VkInstance; pCreateInfo: ptr VkDebugReportCallbackCreateInfoEXT; pAllocator: ptr VkAllocationCallbacks; pCallback: ptr VkDebugReportCallbackEXT): VkResult {.cdecl.}
+  PFN_vkDestroyDebugReportCallbackEXT* = proc (instance: VkInstance; callback: VkDebugReportCallbackEXT; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkDebugReportMessageEXT* = proc (instance: VkInstance; flags: VkDebugReportFlagsEXT; objectType: VkDebugReportObjectTypeEXT; cbObject: uint64; location: csize; messageCode:  int32; pLayerPrefix: cstring; pMessage: cstring) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateDebugReportCallbackEXT*(instance: VkInstance; pCreateInfo: ptr VkDebugReportCallbackCreateInfoEXT; pAllocator: ptr VkAllocationCallbacks; pCallback: ptr VkDebugReportCallbackEXT): VkResult {.cdecl, importc.}
@@ -3910,11 +3910,11 @@ type
     pMarkerName*: cstring
     color*: array[4, cfloat]
 
-  PFN_vkDebugMarkerSetObjectTagEXT* = proc (device: VkDevice; pTagInfo: ptr VkDebugMarkerObjectTagInfoEXT): VkResult
-  PFN_vkDebugMarkerSetObjectNameEXT* = proc (device: VkDevice; pNameInfo: ptr VkDebugMarkerObjectNameInfoEXT): VkResult
-  PFN_vkCmdDebugMarkerBeginEXT* = proc (commandBuffer: VkCommandBuffer; pMarkerInfo: ptr VkDebugMarkerMarkerInfoEXT)
-  PFN_vkCmdDebugMarkerEndEXT* = proc (commandBuffer: VkCommandBuffer)
-  PFN_vkCmdDebugMarkerInsertEXT* = proc (commandBuffer: VkCommandBuffer; pMarkerInfo: ptr VkDebugMarkerMarkerInfoEXT)
+  PFN_vkDebugMarkerSetObjectTagEXT* = proc (device: VkDevice; pTagInfo: ptr VkDebugMarkerObjectTagInfoEXT): VkResult {.cdecl.}
+  PFN_vkDebugMarkerSetObjectNameEXT* = proc (device: VkDevice; pNameInfo: ptr VkDebugMarkerObjectNameInfoEXT): VkResult {.cdecl.}
+  PFN_vkCmdDebugMarkerBeginEXT* = proc (commandBuffer: VkCommandBuffer; pMarkerInfo: ptr VkDebugMarkerMarkerInfoEXT) {.cdecl.}
+  PFN_vkCmdDebugMarkerEndEXT* = proc (commandBuffer: VkCommandBuffer) {.cdecl.}
+  PFN_vkCmdDebugMarkerInsertEXT* = proc (commandBuffer: VkCommandBuffer; pMarkerInfo: ptr VkDebugMarkerMarkerInfoEXT) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkDebugMarkerSetObjectTagEXT*(device: VkDevice; pTagInfo: ptr VkDebugMarkerObjectTagInfoEXT): VkResult {.cdecl, importc.}
@@ -3954,8 +3954,8 @@ const
   vkAmdDrawIndirectCountExtensionName* = "VK_AMD_draw_indirect_count"
 
 type
-  PFN_vkCmdDrawIndirectCountAMD* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; countBuffer: VkBuffer; countBufferOffset: VkDeviceSize; maxDrawCount: uint32; stride: uint32)
-  PFN_vkCmdDrawIndexedIndirectCountAMD* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; countBuffer: VkBuffer; countBufferOffset: VkDeviceSize; maxDrawCount: uint32; stride: uint32)
+  PFN_vkCmdDrawIndirectCountAMD* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; countBuffer: VkBuffer; countBufferOffset: VkDeviceSize; maxDrawCount: uint32; stride: uint32) {.cdecl.}
+  PFN_vkCmdDrawIndexedIndirectCountAMD* = proc (commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; countBuffer: VkBuffer; countBufferOffset: VkDeviceSize; maxDrawCount: uint32; stride: uint32) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCmdDrawIndirectCountAMD*(commandBuffer: VkCommandBuffer; buffer: VkBuffer; offset: VkDeviceSize; countBuffer: VkBuffer; countBufferOffset: VkDeviceSize; maxDrawCount: uint32; stride: uint32) {.cdecl, importc.}
@@ -4041,7 +4041,7 @@ type
     exportFromImportedHandleTypes*: VkExternalMemoryHandleTypeFlagsNV
     compatibleHandleTypes*: VkExternalMemoryHandleTypeFlagsNV
 
-  PFN_vkGetPhysicalDeviceExternalImageFormatPropertiesNV* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; iamgeType: VkImageType; tiling: VkImageTiling; usage: VkImageUsageFlags; flags: VkImageCreateFlags; externalHandleType: VkExternalMemoryHandleTypeFlagsNV; pExternalImageFormatProperties: ptr VkExternalImageFormatPropertiesNV): VkResult
+  PFN_vkGetPhysicalDeviceExternalImageFormatPropertiesNV* = proc (physicalDevice: VkPhysicalDevice; format: VkFormat; iamgeType: VkImageType; tiling: VkImageTiling; usage: VkImageUsageFlags; flags: VkImageCreateFlags; externalHandleType: VkExternalMemoryHandleTypeFlagsNV; pExternalImageFormatProperties: ptr VkExternalImageFormatPropertiesNV): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceExternalImageFormatPropertiesNV*(physicalDevice: VkPhysicalDevice; format: VkFormat; iamgeType: VkImageType; tiling: VkImageTiling; usage: VkImageUsageFlags; flags: VkImageCreateFlags; externalHandleType: VkExternalMemoryHandleTypeFlagsNV; pExternalImageFormatProperties: ptr VkExternalImageFormatPropertiesNV): VkResult {.cdecl, importc.}
@@ -4082,7 +4082,7 @@ when defined(VK_USE_PLATFORM_WIN32_KHR):
       pAttributes*: ptr SECURITY_ATTRIBUTES
       dwAccess*: DWORD
 
-    PFN_vkGetMemoryWin32HandleNV* = proc (device: VkDevice; memory: VkDeviceMemory; handleType: VkExternalMemoryHandleTypeFlagsNV; pHandle: ptr HANDLE): VkResult
+    PFN_vkGetMemoryWin32HandleNV* = proc (device: VkDevice; memory: VkDeviceMemory; handleType: VkExternalMemoryHandleTypeFlagsNV; pHandle: ptr HANDLE): VkResult {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
     proc vkGetMemoryWin32HandleNV*(device: VkDevice; memory: VkDeviceMemory; handleType: VkExternalMemoryHandleTypeFlagsNV; pHandle: ptr HANDLE): VkResult {.cdecl, importc.}
@@ -4219,13 +4219,13 @@ type
     pNext*: pointer
     modes*: VkDeviceGroupPresentModeFlagsKHX
 
-  PFN_vkGetDeviceGroupPeerMemoryFeaturesKHX* = proc (device: VkDevice; heapIndex: uint32; localDeviceIndex: uint32; remoteDeviceIndex: uint32; pPeerMemoryFeatures: ptr VkPeerMemoryFeatureFlagsKHX)
-  PFN_vkCmdSetDeviceMaskKHX* = proc (commandBuffer: VkCommandBuffer; deviceMask: uint32)
-  PFN_vkCmdDispatchBaseKHX* = proc (commandBuffer: VkCommandBuffer; baseGroupX: uint32; baseGroupY: uint32; baseGroupZ: uint32; groupCountX: uint32; groupCountY: uint32; groupCountZ: uint32)
-  PFN_vkGetDeviceGroupPresentCapabilitiesKHX* = proc (device: VkDevice; pDeviceGroupPresentCapabilities: ptr VkDeviceGroupPresentCapabilitiesKHX): VkResult
-  PFN_vkGetDeviceGroupSurfacePresentModesKHX* = proc (device: VkDevice; surface: VkSurfaceKHR; pModes: ptr VkDeviceGroupPresentModeFlagsKHX): VkResult
-  PFN_vkGetPhysicalDevicePresentRectanglesKHX* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pRectCount: ptr uint32; pRects: ptr VkRect2D): VkResult
-  PFN_vkAcquireNextImage2KHX* = proc (device: VkDevice; pAcquireInfo: ptr VkAcquireNextImageInfoKHX; pImageIndex: ptr uint32): VkResult
+  PFN_vkGetDeviceGroupPeerMemoryFeaturesKHX* = proc (device: VkDevice; heapIndex: uint32; localDeviceIndex: uint32; remoteDeviceIndex: uint32; pPeerMemoryFeatures: ptr VkPeerMemoryFeatureFlagsKHX) {.cdecl.}
+  PFN_vkCmdSetDeviceMaskKHX* = proc (commandBuffer: VkCommandBuffer; deviceMask: uint32) {.cdecl.}
+  PFN_vkCmdDispatchBaseKHX* = proc (commandBuffer: VkCommandBuffer; baseGroupX: uint32; baseGroupY: uint32; baseGroupZ: uint32; groupCountX: uint32; groupCountY: uint32; groupCountZ: uint32) {.cdecl.}
+  PFN_vkGetDeviceGroupPresentCapabilitiesKHX* = proc (device: VkDevice; pDeviceGroupPresentCapabilities: ptr VkDeviceGroupPresentCapabilitiesKHX): VkResult {.cdecl.}
+  PFN_vkGetDeviceGroupSurfacePresentModesKHX* = proc (device: VkDevice; surface: VkSurfaceKHR; pModes: ptr VkDeviceGroupPresentModeFlagsKHX): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDevicePresentRectanglesKHX* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pRectCount: ptr uint32; pRects: ptr VkRect2D): VkResult {.cdecl.}
+  PFN_vkAcquireNextImage2KHX* = proc (device: VkDevice; pAcquireInfo: ptr VkAcquireNextImageInfoKHX; pImageIndex: ptr uint32): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetDeviceGroupPeerMemoryFeaturesKHX*(device: VkDevice; heapIndex: uint32; localDeviceIndex: uint32; remoteDeviceIndex: uint32; pPeerMemoryFeatures: ptr VkPeerMemoryFeatureFlagsKHX) {.cdecl, importc.}
@@ -4268,7 +4268,7 @@ when defined(VK_USE_PLATFORM_VI_NN):
       flags*: VkViSurfaceCreateFlagsNN
       window*: pointer
 
-    PFN_vkCreateViSurfaceNN* = proc (instance: VkInstance; pCreateInfo: ptr VkViSurfaceCreateInfoNN; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
+    PFN_vkCreateViSurfaceNN* = proc (instance: VkInstance; pCreateInfo: ptr VkViSurfaceCreateInfoNN; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateViSurfaceNN*(instance: VkInstance; pCreateInfo: ptr VkViSurfaceCreateInfoNN; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -4298,7 +4298,7 @@ type
     physicalDeviceCount*: uint32
     pPhysicalDevices*: ptr VkPhysicalDevice
 
-  PFN_vkEnumeratePhysicalDeviceGroupsKHX* = proc (instance: VkInstance; pPhysicalDeviceGroupCount: ptr uint32; pPhysicalDeviceGroupProperties: ptr VkPhysicalDeviceGroupPropertiesKHX): VkResult
+  PFN_vkEnumeratePhysicalDeviceGroupsKHX* = proc (instance: VkInstance; pPhysicalDeviceGroupCount: ptr uint32; pPhysicalDeviceGroupProperties: ptr VkPhysicalDeviceGroupPropertiesKHX): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkEnumeratePhysicalDeviceGroupsKHX*(instance: VkInstance; pPhysicalDeviceGroupCount: ptr uint32; pPhysicalDeviceGroupProperties: ptr VkPhysicalDeviceGroupPropertiesKHX): VkResult {.cdecl, importc.}
@@ -4445,15 +4445,15 @@ type
     pipelineLayout*: VkPipelineLayout
     stageFlags*: VkShaderStageFlags
 
-  PFN_vkCmdProcessCommandsNVX* = proc (commandBuffer: VkCommandBuffer; pProcessCommandsInfo: ptr VkCmdProcessCommandsInfoNVX)
-  PFN_vkCmdReserveSpaceForCommandsNVX* = proc (commandBuffer: VkCommandBuffer; pReserveSpaceInfo: ptr VkCmdReserveSpaceForCommandsInfoNVX)
-  PFN_vkCreateIndirectCommandsLayoutNVX* = proc (device: VkDevice; pCreateInfo: ptr VkIndirectCommandsLayoutCreateInfoNVX; pAllocator: ptr VkAllocationCallbacks; pIndirectCommandsLayout: ptr VkIndirectCommandsLayoutNVX): VkResult
-  PFN_vkDestroyIndirectCommandsLayoutNVX* = proc (device: VkDevice; indirectCommandsLayout: VkIndirectCommandsLayoutNVX; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkCreateObjectTableNVX* = proc (device: VkDevice; pCreateInfo: ptr VkObjectTableCreateInfoNVX; pAllocator: ptr VkAllocationCallbacks; pObjectTable: ptr VkObjectTableNVX): VkResult
-  PFN_vkDestroyObjectTableNVX* = proc (device: VkDevice; objectTable: VkObjectTableNVX; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkRegisterObjectsNVX* = proc (device: VkDevice; objectTable: VkObjectTableNVX; objectCount: uint32; ppObjectTableEntries: ptr ptr VkObjectTableEntryNVX; pObjectIndices: ptr uint32): VkResult
-  PFN_vkUnregisterObjectsNVX* = proc (device: VkDevice; objectTable: VkObjectTableNVX; objectCount: uint32; pObjectEntryTypes: ptr VkObjectEntryTypeNVX; pObjectIndices: ptr uint32): VkResult
-  PFN_vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX* = proc (physicalDevice: VkPhysicalDevice; pFeatures: ptr VkDeviceGeneratedCommandsFeaturesNVX; pLimits: ptr VkDeviceGeneratedCommandsLimitsNVX)
+  PFN_vkCmdProcessCommandsNVX* = proc (commandBuffer: VkCommandBuffer; pProcessCommandsInfo: ptr VkCmdProcessCommandsInfoNVX) {.cdecl.}
+  PFN_vkCmdReserveSpaceForCommandsNVX* = proc (commandBuffer: VkCommandBuffer; pReserveSpaceInfo: ptr VkCmdReserveSpaceForCommandsInfoNVX) {.cdecl.}
+  PFN_vkCreateIndirectCommandsLayoutNVX* = proc (device: VkDevice; pCreateInfo: ptr VkIndirectCommandsLayoutCreateInfoNVX; pAllocator: ptr VkAllocationCallbacks; pIndirectCommandsLayout: ptr VkIndirectCommandsLayoutNVX): VkResult {.cdecl.}
+  PFN_vkDestroyIndirectCommandsLayoutNVX* = proc (device: VkDevice; indirectCommandsLayout: VkIndirectCommandsLayoutNVX; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkCreateObjectTableNVX* = proc (device: VkDevice; pCreateInfo: ptr VkObjectTableCreateInfoNVX; pAllocator: ptr VkAllocationCallbacks; pObjectTable: ptr VkObjectTableNVX): VkResult {.cdecl.}
+  PFN_vkDestroyObjectTableNVX* = proc (device: VkDevice; objectTable: VkObjectTableNVX; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkRegisterObjectsNVX* = proc (device: VkDevice; objectTable: VkObjectTableNVX; objectCount: uint32; ppObjectTableEntries: ptr ptr VkObjectTableEntryNVX; pObjectIndices: ptr uint32): VkResult {.cdecl.}
+  PFN_vkUnregisterObjectsNVX* = proc (device: VkDevice; objectTable: VkObjectTableNVX; objectCount: uint32; pObjectEntryTypes: ptr VkObjectEntryTypeNVX; pObjectIndices: ptr uint32): VkResult {.cdecl.}
+  PFN_vkGetPhysicalDeviceGeneratedCommandsPropertiesNVX* = proc (physicalDevice: VkPhysicalDevice; pFeatures: ptr VkDeviceGeneratedCommandsFeaturesNVX; pLimits: ptr VkDeviceGeneratedCommandsLimitsNVX) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCmdProcessCommandsNVX*(commandBuffer: VkCommandBuffer; pProcessCommandsInfo: ptr VkCmdProcessCommandsInfoNVX) {.cdecl, importc.}
@@ -4483,7 +4483,7 @@ type
     viewportCount*: uint32
     pViewportWScalings*: ptr VkViewportWScalingNV
 
-  PFN_vkCmdSetViewportWScalingNV* = proc (commandBuffer: VkCommandBuffer; firstViewport: uint32; viewportCount: uint32; pViewportWScalings: ptr VkViewportWScalingNV)
+  PFN_vkCmdSetViewportWScalingNV* = proc (commandBuffer: VkCommandBuffer; firstViewport: uint32; viewportCount: uint32; pViewportWScalings: ptr VkViewportWScalingNV) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCmdSetViewportWScalingNV*(commandBuffer: VkCommandBuffer; firstViewport: uint32; viewportCount: uint32; pViewportWScalings: ptr VkViewportWScalingNV) {.cdecl, importc.}
@@ -4494,7 +4494,7 @@ const
   vkExtDirectModeDisplayExtensionName* = "VK_EXT_direct_mode_display"
 
 type
-  PFN_vkReleaseDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; display: VkDisplayKHR): VkResult
+  PFN_vkReleaseDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; display: VkDisplayKHR): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkReleaseDisplayEXT*(physicalDevice: VkPhysicalDevice; display: VkDisplayKHR): VkResult {.cdecl, importc.}
@@ -4509,8 +4509,8 @@ when defined(VK_USE_PLATFORM_XLIB_XRANDR_EXT):
     vkExtAcquireXlibDisplayExtensionName* = "VK_EXT_acquire_xlib_display"
   
   type
-    PFN_vkAcquireXlibDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: ptr Display; display: VkDisplayKHR): VkResult
-    PFN_vkGetRandROutputDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: ptr Display; rrOutput: RROutput; pDisplay: ptr VkDisplayKHR): VkResult
+    PFN_vkAcquireXlibDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: ptr Display; display: VkDisplayKHR): VkResult {.cdecl.}
+    PFN_vkGetRandROutputDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: ptr Display; rrOutput: RROutput; pDisplay: ptr VkDisplayKHR): VkResult {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
     proc vkAcquireXlibDisplayEXT*(physicalDevice: VkPhysicalDevice; dpy: ptr Display; display: VkDisplayKHR): VkResult {.cdecl, importc.}
@@ -4541,7 +4541,7 @@ type
     supportedUsageFlags*: VkImageUsageFlags
     supportedSurfaceCounters*: VkSurfaceCounterFlagsEXT
 
-  PFN_vkGetPhysicalDeviceSurfaceCapabilities2EXT* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pSurfaceCapabilities: ptr VkSurfaceCapabilities2EXT): VkResult
+  PFN_vkGetPhysicalDeviceSurfaceCapabilities2EXT* = proc (physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pSurfaceCapabilities: ptr VkSurfaceCapabilities2EXT): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetPhysicalDeviceSurfaceCapabilities2EXT*(physicalDevice: VkPhysicalDevice; surface: VkSurfaceKHR; pSurfaceCapabilities: ptr VkSurfaceCapabilities2EXT): VkResult {.cdecl, importc.}
@@ -4583,10 +4583,10 @@ type
     pNext*: pointer
     surfaceCounters*: VkSurfaceCounterFlagsEXT
 
-  PFN_vkDisplayPowerControlEXT* = proc (device: VkDevice; display: VkDisplayKHR; pDisplayPowerInfo: ptr VkDisplayPowerInfoEXT): VkResult
-  PFN_vkRegisterDeviceEventEXT* = proc (device: VkDevice; pDeviceEventInfo: ptr VkDeviceEventInfoEXT; pAllocator: ptr VkAllocationCallbacks; pFence: ptr VkFence): VkResult
-  PFN_vkRegisterDisplayEventEXT* = proc (device: VkDevice; display: VkDisplayKHR; pDisplayEventInfo: ptr VkDisplayEventInfoEXT; pAllocator: ptr VkAllocationCallbacks; pFence: ptr VkFence): VkResult
-  PFN_vkGetSwapchainCounterEXT* = proc (device: VkDevice; swapchain: VkSwapchainKHR; counter: VkSurfaceCounterFlagBitsEXT; pCounterValue: ptr uint64): VkResult
+  PFN_vkDisplayPowerControlEXT* = proc (device: VkDevice; display: VkDisplayKHR; pDisplayPowerInfo: ptr VkDisplayPowerInfoEXT): VkResult {.cdecl.}
+  PFN_vkRegisterDeviceEventEXT* = proc (device: VkDevice; pDeviceEventInfo: ptr VkDeviceEventInfoEXT; pAllocator: ptr VkAllocationCallbacks; pFence: ptr VkFence): VkResult {.cdecl.}
+  PFN_vkRegisterDisplayEventEXT* = proc (device: VkDevice; display: VkDisplayKHR; pDisplayEventInfo: ptr VkDisplayEventInfoEXT; pAllocator: ptr VkAllocationCallbacks; pFence: ptr VkFence): VkResult {.cdecl.}
+  PFN_vkGetSwapchainCounterEXT* = proc (device: VkDevice; swapchain: VkSwapchainKHR; counter: VkSurfaceCounterFlagBitsEXT; pCounterValue: ptr uint64): VkResult {.cdecl.}
 
 
 when not defined(VK_NO_PROTOTYPES):
@@ -4621,8 +4621,8 @@ type
     swapchainCount*: uint32
     pTimes*: ptr VkPresentTimeGOOGLE
 
-  PFN_vkGetRefreshCycleDurationGOOGLE* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pDisplayTimingProperties: ptr VkRefreshCycleDurationGOOGLE): VkResult
-  PFN_vkGetPastPresentationTimingGOOGLE* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pPresentationTimingCount: ptr uint32; pPresentationTimings: ptr VkPastPresentationTimingGOOGLE): VkResult
+  PFN_vkGetRefreshCycleDurationGOOGLE* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pDisplayTimingProperties: ptr VkRefreshCycleDurationGOOGLE): VkResult {.cdecl.}
+  PFN_vkGetPastPresentationTimingGOOGLE* = proc (device: VkDevice; swapchain: VkSwapchainKHR; pPresentationTimingCount: ptr uint32; pPresentationTimings: ptr VkPastPresentationTimingGOOGLE): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkGetRefreshCycleDurationGOOGLE*(device: VkDevice; swapchain: VkSwapchainKHR; pDisplayTimingProperties: ptr VkRefreshCycleDurationGOOGLE): VkResult {.cdecl, importc.}
@@ -4704,7 +4704,7 @@ type
     discardRectangleCount*: uint32
     pDiscardRectangles*: ptr VkRect2D
 
-  PFN_vkCmdSetDiscardRectangleEXT* = proc (commandBuffer: VkCommandBuffer; firstDiscardRectangle: uint32; discardRectangleCount: uint32; pDiscardRectangles: ptr VkRect2D)
+  PFN_vkCmdSetDiscardRectangleEXT* = proc (commandBuffer: VkCommandBuffer; firstDiscardRectangle: uint32; discardRectangleCount: uint32; pDiscardRectangles: ptr VkRect2D) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCmdSetDiscardRectangleEXT*(commandBuffer: VkCommandBuffer; firstDiscardRectangle: uint32; discardRectangleCount: uint32; pDiscardRectangles: ptr VkRect2D) {.cdecl, importc.}
@@ -4734,7 +4734,7 @@ type
     maxContentLightLevel*: cfloat
     maxFrameAverageLightLevel*: cfloat
 
-  PFN_vkSetHdrMetadataEXT* = proc (device: VkDevice; swapchainCount: uint32; pSwapchains: ptr VkSwapchainKHR; pMetadata: ptr VkHdrMetadataEXT)
+  PFN_vkSetHdrMetadataEXT* = proc (device: VkDevice; swapchainCount: uint32; pSwapchains: ptr VkSwapchainKHR; pMetadata: ptr VkHdrMetadataEXT) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkSetHdrMetadataEXT*(device: VkDevice; swapchainCount: uint32; pSwapchains: ptr VkSwapchainKHR; pMetadata: ptr VkHdrMetadataEXT) {.cdecl, importc.}
@@ -4754,7 +4754,7 @@ when defined(VK_USE_PLATFORM_IOS_MVK):
       flags*: VkIOSSurfaceCreateFlagsMVK
       pView*: pointer
 
-    PFN_vkCreateIOSSurfaceMVK* = proc (instance: VkInstance; pCreateInfo: ptr VkIOSSurfaceCreateInfoMVK; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
+    PFN_vkCreateIOSSurfaceMVK* = proc (instance: VkInstance; pCreateInfo: ptr VkIOSSurfaceCreateInfoMVK; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateIOSSurfaceMVK*(instance: VkInstance; pCreateInfo: ptr VkIOSSurfaceCreateInfoMVK; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -4774,7 +4774,7 @@ when defined(VK_USE_PLATFORM_MACOS_MVK):
       flags*: VkMacOSSurfaceCreateFlagsMVK
       pView*: pointer
 
-    PFN_vkCreateMacOSSurfaceMVK* = proc (instance: VkInstance; pCreateInfo: ptr VkMacOSSurfaceCreateInfoMVK; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult
+    PFN_vkCreateMacOSSurfaceMVK* = proc (instance: VkInstance; pCreateInfo: ptr VkMacOSSurfaceCreateInfoMVK; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateMacOSSurfaceMVK*(instance: VkInstance; pCreateInfo: ptr VkMacOSSurfaceCreateInfoMVK; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
@@ -4867,8 +4867,8 @@ type
     pNext*: pointer
     maxSampleLocationGridSize*: VkExtent2D
 
-  PFN_vkCmdSetSampleLocationsEXT* = proc (commandBuffer: VkCommandBuffer; pSampleLocationsInfo: ptr VkSampleLocationsInfoEXT)
-  PFN_vkGetPhysicalDeviceMultisamplePropertiesEXT* = proc (physicalDevice: VkPhysicalDevice; samples: VkSampleCountFlagBits; pMultisampleProperties: ptr VkMultisamplePropertiesEXT)
+  PFN_vkCmdSetSampleLocationsEXT* = proc (commandBuffer: VkCommandBuffer; pSampleLocationsInfo: ptr VkSampleLocationsInfoEXT) {.cdecl.}
+  PFN_vkGetPhysicalDeviceMultisamplePropertiesEXT* = proc (physicalDevice: VkPhysicalDevice; samples: VkSampleCountFlagBits; pMultisampleProperties: ptr VkMultisamplePropertiesEXT) {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCmdSetSampleLocationsEXT*(commandBuffer: VkCommandBuffer; pSampleLocationsInfo: ptr VkSampleLocationsInfoEXT) {.cdecl, importc.}
@@ -4978,10 +4978,10 @@ type
     pNext*: pointer
     validationCache*: VkValidationCacheEXT
 
-  PFN_vkCreateValidationCacheEXT* = proc (device: VkDevice; pCreateInfo: ptr VkValidationCacheCreateInfoEXT; pAllocator: ptr VkAllocationCallbacks; pValidationCache: ptr VkValidationCacheEXT): VkResult
-  PFN_vkDestroyValidationCacheEXT* = proc (device: VkDevice; validationCache: VkValidationCacheEXT; pAllocator: ptr VkAllocationCallbacks)
-  PFN_vkMergeValidationCachesEXT* = proc (device: VkDevice; dstCache: VkValidationCacheEXT; srcCacheCount: uint32; pSrcCaches: ptr VkValidationCacheEXT): VkResult
-  PFN_vkGetValidationCacheDataEXT* = proc (device: VkDevice; validationCache: VkValidationCacheEXT; pDataSize: ptr csize; pData: pointer): VkResult
+  PFN_vkCreateValidationCacheEXT* = proc (device: VkDevice; pCreateInfo: ptr VkValidationCacheCreateInfoEXT; pAllocator: ptr VkAllocationCallbacks; pValidationCache: ptr VkValidationCacheEXT): VkResult {.cdecl.}
+  PFN_vkDestroyValidationCacheEXT* = proc (device: VkDevice; validationCache: VkValidationCacheEXT; pAllocator: ptr VkAllocationCallbacks) {.cdecl.}
+  PFN_vkMergeValidationCachesEXT* = proc (device: VkDevice; dstCache: VkValidationCacheEXT; srcCacheCount: uint32; pSrcCaches: ptr VkValidationCacheEXT): VkResult {.cdecl.}
+  PFN_vkGetValidationCacheDataEXT* = proc (device: VkDevice; validationCache: VkValidationCacheEXT; pDataSize: ptr csize; pData: pointer): VkResult {.cdecl.}
 
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateValidationCacheEXT*(device: VkDevice; pCreateInfo: ptr VkValidationCacheCreateInfoEXT; pAllocator: ptr VkAllocationCallbacks; pValidationCache: ptr VkValidationCacheEXT): VkResult {.cdecl, importc.}
