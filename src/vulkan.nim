@@ -82,7 +82,7 @@ const
   vkTrue* = 1
   vkFalse* = 0
   vkQueueFamilyIgnored* = (not 0)
-  vkSubpassExternal* = (not 0)
+  vkSubpassExternal* = 0xffffffff'u32
   vkMaxPhysicalDeviceNameSize* = 256
   vkUuidSize* = 16
   vkMaxMemoryTypes* = 32
@@ -2742,10 +2742,7 @@ type
 when not defined(VK_NO_PROTOTYPES):
   proc vkCreateSharedSwapchainsKHR*(device: VkDevice; swapchainCount: uint32; pCreateInfos: ptr VkSwapchainCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSwapchains: ptr VkSwapchainKHR): VkResult {.cdecl, importc.}
 
-when defined(VK_USE_PLATFORM_XLIB_KHR):
-  const
-    vKKHRXlibSurface* = 1
-
+when defined(linux) and not defined(android):
   const
     vkKhrXlibSurfaceSpecVersion* = 6
     vkKhrXlibSurfaceExtensionName* = "VK_KHR_xlib_surface"
@@ -2757,19 +2754,15 @@ when defined(VK_USE_PLATFORM_XLIB_KHR):
       sType*: VkStructureType
       pNext*: pointer
       flags*: VkXlibSurfaceCreateFlagsKHR
-      dpy*: ptr Display
-      window*: Window
+      dpy*: pointer # ptr Display
+      window*: pointer # Window
 
     PFN_vkCreateXlibSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkXlibSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
-    PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; dpy: ptr Display; visualID: VisualID): VkBool32 {.cdecl.}
+    PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; dpy: pointer; visualID: culong): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateXlibSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkXlibSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
-    proc vkGetPhysicalDeviceXlibPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; dpy: ptr Display; visualID: VisualID): VkBool32 {.cdecl, importc.}
-
-when defined(VK_USE_PLATFORM_XCB_KHR):
-  const
-    vKKHRXcbSurface* = 1
+    proc vkGetPhysicalDeviceXlibPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; dpy: pointer; visualID: culong): VkBool32 {.cdecl, importc.}
 
   const
     vkKhrXcbSurfaceSpecVersion* = 6
@@ -2782,19 +2775,15 @@ when defined(VK_USE_PLATFORM_XCB_KHR):
       sType*: VkStructureType
       pNext*: pointer
       flags*: VkXcbSurfaceCreateFlagsKHR
-      connection*: ptr xcb_connection_t
-      window*: xcb_window_t
+      connection*: pointer # ptr xcb_connection_t
+      window*: uint32 # xcb_window_t
 
     PFN_vkCreateXcbSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkXcbSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
-    PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr xcb_connection_t; visual_id: xcb_visualid_t): VkBool32 {.cdecl.}
+    PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: pointer; visual_id: uint32): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateXcbSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkXcbSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
-    proc vkGetPhysicalDeviceXcbPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr xcb_connection_t; visual_id: xcb_visualid_t): VkBool32 {.cdecl, importc.}
-
-when defined(VK_USE_PLATFORM_WAYLAND_KHR):
-  const
-    vKKHRWaylandSurface* = 1
+    proc vkGetPhysicalDeviceXcbPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: pointer; visual_id: uint32): VkBool32 {.cdecl, importc.}
 
   const
     vkKhrWaylandSurfaceSpecVersion* = 6
@@ -2806,19 +2795,15 @@ when defined(VK_USE_PLATFORM_WAYLAND_KHR):
       sType*: VkStructureType
       pNext*: pointer
       flags*: VkWaylandSurfaceCreateFlagsKHR
-      display*: ptr wl_display
-      surface*: ptr wl_surface
+      display*: pointer # ptr wl_display
+      surface*: pointer # ptr wl_surface
 
     PFN_vkCreateWaylandSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkWaylandSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
-    PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; display: ptr wl_display): VkBool32 {.cdecl.}
+    PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; display: pointer): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateWaylandSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkWaylandSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
-    proc vkGetPhysicalDeviceWaylandPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; display: ptr wl_display): VkBool32 {.cdecl, importc.}
-
-when defined(VK_USE_PLATFORM_MIR_KHR):
-  const
-    vKKHRMirSurface* = 1
+    proc vkGetPhysicalDeviceWaylandPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; display: pointer): VkBool32 {.cdecl, importc.}
 
   const
     vkKhrMirSurfaceSpecVersion* = 4
@@ -2830,17 +2815,17 @@ when defined(VK_USE_PLATFORM_MIR_KHR):
       sType*: VkStructureType
       pNext*: pointer
       flags*: VkMirSurfaceCreateFlagsKHR
-      connection*: ptr MirConnection
-      mirSurface*: ptr MirSurface
+      connection*: pointer # ptr MirConnection
+      mirSurface*: pointer # ptr MirSurface
 
     PFN_vkCreateMirSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkMirSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
-    PFN_vkGetPhysicalDeviceMirPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr MirConnection): VkBool32 {.cdecl.}
+    PFN_vkGetPhysicalDeviceMirPresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: pointer): VkBool32 {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateMirSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkMirSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
-    proc vkGetPhysicalDeviceMirPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: ptr MirConnection): VkBool32 {.cdecl, importc.}
+    proc vkGetPhysicalDeviceMirPresentationSupportKHR*(physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32; connection: pointer): VkBool32 {.cdecl, importc.}
 
-when defined(VK_USE_PLATFORM_ANDROID_KHR):
+when defined(android):
   const
     vKKHRAndroidSurface* = 1
 
@@ -2855,16 +2840,15 @@ when defined(VK_USE_PLATFORM_ANDROID_KHR):
       sType*: VkStructureType
       pNext*: pointer
       flags*: VkAndroidSurfaceCreateFlagsKHR
-      window*: ptr ANativeWindow
+      window*: pointer # ptr ANativeWindow
 
     PFN_vkCreateAndroidSurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkAndroidSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
 
   when not defined(VK_NO_PROTOTYPES):
     proc vkCreateAndroidSurfaceKHR*(instance: VkInstance; pCreateInfo: ptr VkAndroidSurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
 
-when defined(VK_USE_PLATFORM_WIN32_KHR):
-  const
-    vKKHRWin32Surface* = 1
+when defined(windows):
+  import winlean
 
   const
     vkKhrWin32SurfaceSpecVersion* = 6
@@ -3072,7 +3056,7 @@ type
     handleTypes*: VkExternalMemoryHandleTypeFlagsKHR
 
 
-when defined(VK_USE_PLATFORM_WIN32_KHR):
+when defined(windows):
   const
     vKKHRExternalMemoryWin32* = 1
     vkKhrExternalMemoryWin32SpecVersion* = 1
@@ -3141,7 +3125,7 @@ when not defined(VK_NO_PROTOTYPES):
   proc vkGetMemoryFdKHR*(device: VkDevice; pGetFdInfo: ptr VkMemoryGetFdInfoKHR; pFd: ptr cint): VkResult {.cdecl, importc.}
   proc vkGetMemoryFdPropertiesKHR*(device: VkDevice; handleType: VkExternalMemoryHandleTypeFlagBitsKHR; fd: cint; pMemoryFdProperties: ptr VkMemoryFdPropertiesKHR): VkResult {.cdecl, importc.}
 
-when defined(VK_USE_PLATFORM_WIN32_KHR):
+when defined(windows):
   const
     vKKHRWin32KeyedMutex* = 1
     vkKhrWin32KeyedMutexSpecVersion* = 1
@@ -3213,7 +3197,7 @@ type
     handleTypes*: VkExternalSemaphoreHandleTypeFlagsKHR
 
 
-when defined(VK_USE_PLATFORM_WIN32_KHR):
+when defined(windows):
   const
     vKKHRExternalSemaphoreWin32* = 1
     vkKhrExternalSemaphoreWin32SpecVersion* = 1
@@ -3454,7 +3438,7 @@ type
     pNext*: pointer
     handleTypes*: VkExternalFenceHandleTypeFlagsKHR
 
-when defined(VK_USE_PLATFORM_WIN32_KHR):
+when defined(windows):
   const
     vKKHRExternalFenceWin32* = 1
     vkKhrExternalFenceWin32SpecVersion* = 1
@@ -4063,7 +4047,7 @@ type
     handleTypes*: VkExternalMemoryHandleTypeFlagsNV
 
 
-when defined(VK_USE_PLATFORM_WIN32_KHR):
+when defined(windows):
   const
     vKNVExternalMemoryWin32* = 1
     vkNvExternalMemoryWin32SpecVersion* = 1
@@ -4088,7 +4072,7 @@ when defined(VK_USE_PLATFORM_WIN32_KHR):
     proc vkGetMemoryWin32HandleNV*(device: VkDevice; memory: VkDeviceMemory; handleType: VkExternalMemoryHandleTypeFlagsNV; pHandle: ptr HANDLE): VkResult {.cdecl, importc.}
 
 
-when defined(VK_USE_PLATFORM_WIN32_KHR):
+when defined(windows):
   const
     vKNVWin32KeyedMutex* = 1
     vkNvWin32KeyedMutexSpecVersion* = 1
@@ -4500,7 +4484,7 @@ when not defined(VK_NO_PROTOTYPES):
   proc vkReleaseDisplayEXT*(physicalDevice: VkPhysicalDevice; display: VkDisplayKHR): VkResult {.cdecl, importc.}
 
 
-when defined(VK_USE_PLATFORM_XLIB_XRANDR_EXT):
+when defined(linux) and not defined(android):
   const
     vKExtAcquireXlibDisplay* = 1
   
@@ -4509,12 +4493,12 @@ when defined(VK_USE_PLATFORM_XLIB_XRANDR_EXT):
     vkExtAcquireXlibDisplayExtensionName* = "VK_EXT_acquire_xlib_display"
   
   type
-    PFN_vkAcquireXlibDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: ptr Display; display: VkDisplayKHR): VkResult {.cdecl.}
-    PFN_vkGetRandROutputDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: ptr Display; rrOutput: RROutput; pDisplay: ptr VkDisplayKHR): VkResult {.cdecl.}
+    PFN_vkAcquireXlibDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: pointer; display: VkDisplayKHR): VkResult {.cdecl.}
+    PFN_vkGetRandROutputDisplayEXT* = proc (physicalDevice: VkPhysicalDevice; dpy: pointer; rrOutput: culong; pDisplay: ptr VkDisplayKHR): VkResult {.cdecl.}
   
   when not defined(VK_NO_PROTOTYPES):
-    proc vkAcquireXlibDisplayEXT*(physicalDevice: VkPhysicalDevice; dpy: ptr Display; display: VkDisplayKHR): VkResult {.cdecl, importc.}
-    proc vkGetRandROutputDisplayEXT*(physicalDevice: VkPhysicalDevice; dpy: ptr Display; rrOutput: RROutput; pDisplay: ptr VkDisplayKHR): VkResult {.cdecl, importc.}
+    proc vkAcquireXlibDisplayEXT*(physicalDevice: VkPhysicalDevice; dpy: pointer; display: VkDisplayKHR): VkResult {.cdecl, importc.}
+    proc vkGetRandROutputDisplayEXT*(physicalDevice: VkPhysicalDevice; dpy: pointer; rrOutput: culong; pDisplay: ptr VkDisplayKHR): VkResult {.cdecl, importc.}
 
 const
   vKEXTDisplaySurfaceCounter* = 1
@@ -4740,7 +4724,7 @@ when not defined(VK_NO_PROTOTYPES):
   proc vkSetHdrMetadataEXT*(device: VkDevice; swapchainCount: uint32; pSwapchains: ptr VkSwapchainKHR; pMetadata: ptr VkHdrMetadataEXT) {.cdecl, importc.}
 
 
-when defined(VK_USE_PLATFORM_IOS_MVK):
+when defined(ios):
   const
     vKMVKIosSurface* = 1
     vkMvkIosSurfaceSpecVersion* = 2
@@ -4760,7 +4744,7 @@ when defined(VK_USE_PLATFORM_IOS_MVK):
     proc vkCreateIOSSurfaceMVK*(instance: VkInstance; pCreateInfo: ptr VkIOSSurfaceCreateInfoMVK; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl, importc.}
 
 
-when defined(VK_USE_PLATFORM_MACOS_MVK):
+when defined(macosx) and not defined(ios):
   const
     vKMVKMacosSurface* = 1
     vkMvkMacosSurfaceSpecVersion* = 2
