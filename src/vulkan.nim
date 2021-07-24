@@ -2860,8 +2860,8 @@ when defined(windows):
       sType*: VkStructureType
       pNext*: pointer
       flags*: VkWin32SurfaceCreateFlagsKHR
-      hinstance*: HINSTANCE
-      hwnd*: HWND
+      hinstance*: Handle # HINSTANCE
+      hwnd*: Handle # HWND
 
     PFN_vkCreateWin32SurfaceKHR* = proc (instance: VkInstance; pCreateInfo: ptr VkWin32SurfaceCreateInfoKHR; pAllocator: ptr VkAllocationCallbacks; pSurface: ptr VkSurfaceKHR): VkResult {.cdecl.}
     PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR* = proc (physicalDevice: VkPhysicalDevice; queueFamilyIndex: uint32): VkBool32 {.cdecl.}
@@ -3068,14 +3068,14 @@ when defined(windows):
       pNext*: pointer
       handleType*: VkExternalMemoryHandleTypeFlagBitsKHR
       handle*: HANDLE
-      name*: LPCWSTR
+      name*: WideCString
 
     VkExportMemoryWin32HandleInfoKHR* = object
       sType*: VkStructureType
       pNext*: pointer
       pAttributes*: ptr SECURITY_ATTRIBUTES
       dwAccess*: DWORD
-      name*: LPCWSTR
+      name*: WideCString
 
     VkMemoryWin32HandlePropertiesKHR* = object
       sType*: VkStructureType
@@ -3211,14 +3211,14 @@ when defined(windows):
       flags*: VkSemaphoreImportFlagsKHR
       handleType*: VkExternalSemaphoreHandleTypeFlagBitsKHR
       handle*: HANDLE
-      name*: LPCWSTR
+      name*: WideCString
 
     VkExportSemaphoreWin32HandleInfoKHR* = object
       sType*: VkStructureType
       pNext*: pointer
       pAttributes*: ptr SECURITY_ATTRIBUTES
       dwAccess*: DWORD
-      name*: LPCWSTR
+      name*: WideCString
 
     VkD3D12FenceSubmitInfoKHR* = object
       sType*: VkStructureType
@@ -3452,14 +3452,14 @@ when defined(windows):
       flags*: VkFenceImportFlagsKHR
       handleType*: VkExternalFenceHandleTypeFlagBitsKHR
       handle*: HANDLE
-      name*: LPCWSTR
+      name*: WideCString
 
     VkExportFenceWin32HandleInfoKHR* = object
       sType*: VkStructureType
       pNext*: pointer
       pAttributes*: ptr SECURITY_ATTRIBUTES
       dwAccess*: DWORD
-      name*: LPCWSTR
+      name*: WideCString
 
     VkFenceGetWin32HandleInfoKHR* = object
       sType*: VkStructureType
