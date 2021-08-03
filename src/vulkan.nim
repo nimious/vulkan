@@ -8,7 +8,7 @@
 {.deadCodeElim: on.}
 
 
-when not (defined(android) or defined(linux) or defined(windows)):
+when not (defined(android) or defined(linux) or defined(windows) or defined(macosx)):
   {.error: "vulkan does not support this platform".}
 
 
