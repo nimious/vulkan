@@ -2125,7 +2125,7 @@ type
     imageOffset*: VkOffset3D
     imageExtent*: VkExtent3D
 
-  VkClearColorValue* = object {.union.}
+  VkClearColorValue* {.union.} = object
     float32*: array[4, cfloat]
     int32*: array[4,  int32]
     uint32*: array[4, uint32]
@@ -2134,7 +2134,7 @@ type
     depth*: cfloat
     stencil*: uint32
 
-  VkClearValue* = object {.union.}
+  VkClearValue* {.union.} = object
     color*: VkClearColorValue
     depthStencil*: VkClearDepthStencilValue
 
